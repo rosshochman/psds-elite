@@ -76,7 +76,7 @@ if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
         st.stop()
 
 # Call the sidebar function
-make_sidebar()
+#make_sidebar()
 
 # Step 3: If user is not authenticated, display login button
 if not st.session_state.get('logged_in', False):
