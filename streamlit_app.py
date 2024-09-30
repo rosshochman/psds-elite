@@ -1,15 +1,14 @@
 import streamlit as st
 import requests
 from requests_oauthlib import OAuth2Session
-from time import sleep
 from urllib.parse import urlencode
 import json
 
+# Navigation sidebar (assuming it's imported)
 from navigation import make_sidebar
-
 make_sidebar()
 
-# Discord OAuth2 Credentials from Streamlit secrets
+# Discord OAuth2 credentials from Streamlit secrets
 CLIENT_ID = st.secrets["CLIENT_ID"]
 CLIENT_SECRET = st.secrets["CLIENT_SECRET"]
 REDIRECT_URI = st.secrets["REDIRECT_URI"]
@@ -29,14 +28,28 @@ if "logged_in" not in st.session_state:
     st.session_state.logged_in = False
 
 def login_with_discord():
-    # Generate Discord login URL
-    authorization_url, _ = oauth.authorization_url(AUTHORIZATION_BASE_URL)
+    # Generate Discord login URL and state
+    authorization_url, state = oauth.authorization_url(AUTHORIZATION_BASE_URL)
+
+    # Save the state in session to verify it after redirection
+    st.session_state['oauth_state'] = state
+
+    # Redirect user to Discord login
     st.write(f"[Log in with Discord]({authorization_url})")
 
 def fetch_discord_user_info(redirect_url):
     try:
-        # Fetch the access token using the authorization response URL
-        token = oauth.fetch_token(TOKEN_URL, client_secret=CLIENT_SECRET, authorization_response=redirect_url)
+        # Fetch the access token using the authorization response URL and state
+        token = oauth.fetch_token(
+            TOKEN_URL, 
+            client_secret=CLIENT_SECRET, 
+            authorization_response=redirect_url,
+            redirect_uri=REDIRECT_URI,
+            state=st.session_state['oauth_state']  # Use the state stored in session
+        )
+        
+        # Log the token for debugging purposes
+        st.write("Access Token Received:", token)
         
         # Fetch basic user information
         user_info = requests.get(USER_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
@@ -45,7 +58,6 @@ def fetch_discord_user_info(redirect_url):
         user_guilds = requests.get(USER_GUILDS_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
         
         return user_info, user_guilds
-    
     except Exception as e:
         st.error(f"Error fetching token or user info: {str(e)}")
         return None, None
@@ -61,14 +73,14 @@ def authenticate_user():
     query_params = st.experimental_get_query_params()
 
     # Log the query parameters for debugging
-    st.write("Query parameters received:", query_params)  # Debugging
+    st.write("Query parameters received:", query_params)
 
     # Check if Discord has redirected with an authorization code
     if "code" in query_params:
         auth_code = query_params['code'][0]  # Extract the authorization code
-
+        
         # Log the authorization code for debugging
-        st.write(f"Authorization code received: {auth_code}")  # Debugging
+        st.write(f"Authorization code received: {auth_code}")
 
         # Manually construct the full redirect URL
         full_redirect_url = REDIRECT_URI + "?" + urlencode(query_params)
@@ -82,10 +94,11 @@ def authenticate_user():
                 st.session_state.logged_in = True
                 st.session_state.user_info = user_info
                 st.success(f"Logged in as {user_info['username']}, and you're a member of the required guild!")
-                sleep(0.5)
-                st.switch_page("pages/page1.py")  # Redirect to another page after successful login
+                st.experimental_rerun()  # Reload the page after successful login
             else:
                 st.error("You must be a member of the required Discord guild to access this app.")
+        else:
+            st.error("Failed to fetch user information or guilds.")
     else:
         st.write("No authorization code found in URL.")
 
@@ -94,7 +107,6 @@ st.title("Welcome to Diamond Corp")
 
 if st.session_state.logged_in:
     st.success(f"Already logged in as {st.session_state.user_info['username']}")
-    st.switch_page("pages/page1.py")
 else:
     authenticate_user()  # Check if the user has logged in
     st.write("Please log in to continue.")
