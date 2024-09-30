@@ -35,8 +35,7 @@ def fetch_discord_user_info():
 
 def authenticate_user():
     if "code" in st.experimental_get_query_params():
-        auth_code = query_params['code'][0]  # Extract the authorization code
-        user_info = fetch_discord_user_info(auth_code)
+        user_info = fetch_discord_user_info()
         st.session_state.logged_in = True
         st.session_state.user_info = user_info
         st.success(f"Logged in as {user_info['username']}")
