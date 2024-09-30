@@ -4,8 +4,7 @@ from urllib.parse import urlencode, urlparse, parse_qs
 from navigation import make_sidebar
 from time import sleep
 
-# Call the sidebar function
-make_sidebar()
+
 
 # Discord OAuth2 credentials
 client_id = st.secrets["CLIENT_ID"]
@@ -81,7 +80,8 @@ if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = False
         st.stop()
 
-
+# Call the sidebar function
+make_sidebar()
 
 # Step 3: If user is not authenticated, display login button
 if not st.session_state.get('logged_in', False):
