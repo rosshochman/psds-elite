@@ -5,7 +5,7 @@ from navigation import make_sidebar
 from time import sleep
 
 # Call the sidebar function
-make_sidebar()
+#make_sidebar()
 
 # Discord OAuth2 credentials
 client_id = st.secrets["CLIENT_ID"]
