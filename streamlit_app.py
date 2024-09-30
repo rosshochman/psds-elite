@@ -10,6 +10,7 @@ redirect_uri = st.secrets["REDIRECT_URI"]
 # Discord guild ID to check
 guild_id = st.secrets["TARGET_GUILD_ID"]
 
+
 # Generate the Discord login URL
 def generate_discord_login_url():
     params = {
@@ -75,5 +76,4 @@ if 'code' in query_params:
     if 'access_token' in token_data:
         # Store access token in session state
         st.session_state['access_token'] = token_data['access_token']
-        # Reload the app to move to authenticated state
-        st.experimental_rerun()
+        # No need to manually rerun, Streamlit automatically re-runs on state changes
