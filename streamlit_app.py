@@ -2,6 +2,8 @@ import streamlit as st
 import requests
 from requests_oauthlib import OAuth2Session
 from time import sleep
+from urllib.parse import urlencode
+
 from navigation import make_sidebar
 
 make_sidebar()
@@ -54,8 +56,8 @@ def authenticate_user():
 
     # Check if Discord has redirected with an authorization code
     if "code" in query_params:
-        # Build the full redirect URL (to pass to fetch_token)
-        full_redirect_url = st.experimental_get_url()
+        # Manually construct the full redirect URL
+        full_redirect_url = REDIRECT_URI + "?" + urlencode(query_params)
 
         # Fetch user info and guild memberships
         user_info, user_guilds = fetch_discord_user_info(full_redirect_url)
