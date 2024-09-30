@@ -8,8 +8,8 @@ st.title("Welcome to PSDS Elite")
 
 st.write("Please log in to continue (username `test`, password `test`).")
 
-username = st.text_input("Username")
-password = st.text_input("Password", type="password")
+#username = st.text_input("Username")
+#password = st.text_input("Password", type="password")
 
 if st.button("Log in", type="primary"):
     if username == "test" and password == "test":
