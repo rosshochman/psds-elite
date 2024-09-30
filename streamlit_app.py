@@ -65,10 +65,8 @@ elif 'access_token' in st.session_state:
     else:
         st.write("You are not in the required guild. Access denied.")
 
-# Step 3: Capture OAuth2 callback
-# Parse the URL query parameters manually
-parsed_url = urlparse(st.experimental_get_url())
-query_params = parse_qs(parsed_url.query)
+# Step 3: Capture OAuth2 callback code using query parameters
+query_params = st.experimental_get_query_params()
 
 if 'code' in query_params:
     code = query_params['code'][0]
