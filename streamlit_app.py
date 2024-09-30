@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 from urllib.parse import urlencode, urlparse, parse_qs
 from navigation import make_sidebar
-import time
+from time import sleep
 
 # Call the sidebar function
 make_sidebar()
@@ -74,7 +74,7 @@ if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
     if is_user_in_guild(guilds):
         st.session_state['logged_in'] = True
         st.write("You are in the guild! Access granted.")
-        #time.sleep(2)
+        sleep(2)
         st.switch_page("pages/page1.py")
     else:
         st.write("You are not in the required guild. Access denied.")
