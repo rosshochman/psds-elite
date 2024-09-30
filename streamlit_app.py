@@ -1,21 +1,54 @@
 import streamlit as st
+import requests
+from requests_oauthlib import OAuth2Session
 from time import sleep
 from navigation import make_sidebar
 
 make_sidebar()
 
-st.title("Welcome to PSDS Elite")
+# Discord OAuth2 Credentials
+CLIENT_ID = 'your_client_id'  # Replace with your Discord Client ID
+CLIENT_SECRET = 'your_client_secret'  # Replace with your Discord Client Secret
+REDIRECT_URI = 'your_redirect_uri'  # Replace with your Redirect URI
+AUTHORIZATION_BASE_URL = 'https://discord.com/api/oauth2/authorize'
+TOKEN_URL = 'https://discord.com/api/oauth2/token'
+USER_URL = 'https://discord.com/api/users/@me'
 
-st.write("Please log in to continue (username `test`, password `test`).")
+# Initialize OAuth session
+oauth = OAuth2Session(CLIENT_ID, redirect_uri=REDIRECT_URI, scope=["identify"])
 
-#username = st.text_input("Username")
-#password = st.text_input("Password", type="password")
+# Ensure session state for authentication
+if "logged_in" not in st.session_state:
+    st.session_state.logged_in = False
 
-if st.button("Log in", type="primary"):
-    if username == "test" and password == "test":
+def login_with_discord():
+    # Generate Discord login URL
+    authorization_url, _ = oauth.authorization_url(AUTHORIZATION_BASE_URL)
+
+    # Redirect user to Discord for login
+    st.write(f"[Log in with Discord]({authorization_url})")
+
+def fetch_discord_user_info():
+    token = oauth.fetch_token(TOKEN_URL, client_secret=CLIENT_SECRET, authorization_response=st.experimental_get_query_params().get('url'))
+    user_info = requests.get(USER_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
+    return user_info
+
+def authenticate_user():
+    if "code" in st.experimental_get_query_params():
+        user_info = fetch_discord_user_info()
         st.session_state.logged_in = True
-        st.success("Logged in successfully!")
+        st.session_state.user_info = user_info
+        st.success(f"Logged in as {user_info['username']}")
         sleep(0.5)
         st.switch_page("pages/page1.py")
-    else:
-        st.error("Incorrect username or password")
+
+# Main App Layout
+st.title("Welcome to PSDS Elite")
+
+if st.session_state.logged_in:
+    st.success(f"Already logged in as {st.session_state.user_info['username']}")
+    st.switch_page("pages/page1.py")
+else:
+    authenticate_user()  # Check if the user has logged in
+    st.write("Please log in to continue.")
+    login_with_discord()
