@@ -1,6 +1,7 @@
 import streamlit as st
 import requests
 from urllib.parse import urlencode, urlparse, parse_qs
+from navigation import make_sidebar
 
 # Discord OAuth2 credentials
 client_id = st.secrets["CLIENT_ID"]
@@ -46,7 +47,7 @@ def fetch_user_guilds(token):
 def is_user_in_guild(guilds):
     return any(guild['id'] == guild_id for guild in guilds)
 
-# Step 1: Capture OAuth2 callback code automatically when user is redirected
+# Capture OAuth2 callback code using query parameters
 query_params = st.experimental_get_query_params()
 
 if 'code' in query_params and 'access_token' not in st.session_state:
@@ -61,18 +62,24 @@ if 'code' in query_params and 'access_token' not in st.session_state:
         st.experimental_set_query_params()
 
 # Step 2: If user is authenticated, check their guild membership
-if 'access_token' in st.session_state:
+if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
     st.write("Checking your Discord guild memberships...")
     token = st.session_state['access_token']
     guilds = fetch_user_guilds(token)
 
     if is_user_in_guild(guilds):
+        st.session_state['logged_in'] = True
         st.write("You are in the guild! Access granted.")
-        # Display your Streamlit content here
     else:
         st.write("You are not in the required guild. Access denied.")
-else:
-    # Step 3: Display login button if not authenticated
+        st.session_state['logged_in'] = False
+        st.stop()
+
+# Call the sidebar function
+make_sidebar()
+
+# Step 3: If user is not authenticated, display login button
+if not st.session_state.get('logged_in', False):
     st.write("Click the button to log in with Discord")
     if st.button("Login with Discord"):
         # Redirect user to Discord's OAuth2 page
