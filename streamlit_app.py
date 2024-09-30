@@ -46,16 +46,22 @@ def fetch_user_guilds(token):
 def is_user_in_guild(guilds):
     return any(guild['id'] == guild_id for guild in guilds)
 
-# Step 1: Display login button if not authenticated
-if 'access_token' not in st.session_state:
-    st.write("Click the button to log in with Discord")
-    if st.button("Login with Discord"):
-        # Redirect user to Discord's OAuth2 page
-        auth_url = generate_discord_login_url()
-        st.write(f"[Click here to authenticate with Discord]({auth_url})")
+# Step 1: Capture OAuth2 callback code automatically when user is redirected
+query_params = st.experimental_get_query_params()
 
-# Step 2: Handle the OAuth2 callback and check guild membership
-elif 'access_token' in st.session_state:
+if 'code' in query_params and 'access_token' not in st.session_state:
+    # Automatically exchange the code for an access token
+    code = query_params['code'][0]
+    token_data = exchange_code_for_token(code)
+
+    if 'access_token' in token_data:
+        # Store access token in session state
+        st.session_state['access_token'] = token_data['access_token']
+        # Optionally clear the URL of the code parameter
+        st.experimental_set_query_params()
+
+# Step 2: If user is authenticated, check their guild membership
+if 'access_token' in st.session_state:
     st.write("Checking your Discord guild memberships...")
     token = st.session_state['access_token']
     guilds = fetch_user_guilds(token)
@@ -65,15 +71,10 @@ elif 'access_token' in st.session_state:
         # Display your Streamlit content here
     else:
         st.write("You are not in the required guild. Access denied.")
-
-# Step 3: Capture OAuth2 callback code using query parameters
-query_params = st.experimental_get_query_params()
-
-if 'code' in query_params:
-    code = query_params['code'][0]
-    token_data = exchange_code_for_token(code)
-    
-    if 'access_token' in token_data:
-        # Store access token in session state
-        st.session_state['access_token'] = token_data['access_token']
-        # No need to manually rerun, Streamlit automatically re-runs on state changes
+else:
+    # Step 3: Display login button if not authenticated
+    st.write("Click the button to log in with Discord")
+    if st.button("Login with Discord"):
+        # Redirect user to Discord's OAuth2 page
+        auth_url = generate_discord_login_url()
+        st.write(f"[Click here to authenticate with Discord]({auth_url})")
