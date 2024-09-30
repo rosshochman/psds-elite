@@ -1,2 +1,2 @@
-[client]
-showSidebarNavigation = true
+#[client]
+#showSidebarNavigation = false
