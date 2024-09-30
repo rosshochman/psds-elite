@@ -76,7 +76,7 @@ if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
         st.write("You are in the guild! Access granted.")
         sleep(2)
         if st.button("Go to Page 2"):
-            st.write('<meta http-equiv="refresh" content="0; url=/page2">', unsafe_allow_html=True)
+            st.write('<meta http-equiv="refresh" content="0; url=/~/+/page2">', unsafe_allow_html=True)
         #st.switch_page("pages/page2.py")
         #st.markdown('[Go to App](https://psds-elite.streamlit.app/page1)')
     else:
