@@ -75,7 +75,8 @@ if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
         st.session_state['logged_in'] = True
         st.write("You are in the guild! Access granted.")
         sleep(2)
-        st.switch_page("pages/page2.py")
+        #st.switch_page("pages/page2.py")
+        st.markdown('[Go to App](https://psds-elite.streamlit.app/page1)')
     else:
         st.write("You are not in the required guild. Access denied.")
         st.session_state['logged_in'] = False
