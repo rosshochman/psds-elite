@@ -10,7 +10,8 @@ make_sidebar()
 CLIENT_ID = st.secrets["CLIENT_ID"]
 CLIENT_SECRET = st.secrets["CLIENT_SECRET"]
 REDIRECT_URI = st.secrets["REDIRECT_URI"]
-AUTHORIZATION_BASE_URL = 'https://discord.com/api/oauth2/authorize'
+#AUTHORIZATION_BASE_URL = 'https://discord.com/api/oauth2/authorize'
+AUTHORIZATION_BASE_URL = st.secrets["base_url"]
 TOKEN_URL = 'https://discord.com/api/oauth2/token'
 USER_URL = 'https://discord.com/api/users/@me'
 
