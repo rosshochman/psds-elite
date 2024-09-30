@@ -48,7 +48,6 @@ def fetch_discord_user_info(redirect_url):
     
     except Exception as e:
         st.error(f"Error fetching token or user info: {str(e)}")
-        st.write(f"Full response from Discord: {json.dumps(e.__dict__, indent=4)}")
         return None, None
 
 def check_guild_membership(user_guilds):
