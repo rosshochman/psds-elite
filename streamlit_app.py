@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from urllib.parse import urlencode, urlparse, parse_qs
 from navigation import make_sidebar
+import time
 
 # Call the sidebar function
 make_sidebar()
