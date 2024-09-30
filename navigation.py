@@ -41,4 +41,4 @@ def logout():
     st.session_state.logged_in = False
     st.info("Logged out successfully!")
     sleep(0.5)
-    st.switch_page("streamlit_app.py")
+    st.markdown('[Go to Main Page](https://psds-elite.streamlit.app/)')
