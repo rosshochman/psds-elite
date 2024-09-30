@@ -31,7 +31,7 @@ def login_with_discord():
     # Generate Discord login URL and state
     authorization_url, state = oauth.authorization_url(AUTHORIZATION_BASE_URL)
 
-    # Save the state in session to verify it after redirection
+    # Save the state in session to verify it after redirection, ensuring it's initialized
     st.session_state['oauth_state'] = state
 
     # Redirect user to Discord login
@@ -39,6 +39,11 @@ def login_with_discord():
 
 def fetch_discord_user_info(redirect_url):
     try:
+        # Check if the 'oauth_state' is present
+        if 'oauth_state' not in st.session_state:
+            st.error("OAuth state is missing. Please try logging in again.")
+            return None, None
+
         # Fetch the access token using the authorization response URL and state
         token = oauth.fetch_token(
             TOKEN_URL, 
