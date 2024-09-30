@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from requests_oauthlib import OAuth2Session
-from urllib.parse import urlencode
+from urllib.parse import urlencode, urlparse, parse_qs
 import json
 
 # Navigation sidebar (assuming it's imported)
@@ -31,26 +31,21 @@ def login_with_discord():
     # Generate Discord login URL and state
     authorization_url, state = oauth.authorization_url(AUTHORIZATION_BASE_URL)
 
-    # Save the state in session to verify it after redirection, ensuring it's initialized
-    st.session_state['oauth_state'] = state
-
+    # Append state to the authorization URL as a query parameter
+    redirect_with_state = authorization_url + f"&state={state}"
+    
     # Redirect user to Discord login
-    st.write(f"[Log in with Discord]({authorization_url})")
+    st.write(f"[Log in with Discord]({redirect_with_state})")
 
-def fetch_discord_user_info(redirect_url):
+def fetch_discord_user_info(redirect_url, state):
     try:
-        # Check if the 'oauth_state' is present
-        if 'oauth_state' not in st.session_state:
-            st.error("OAuth state is missing. Please try logging in again.")
-            return None, None
-
         # Fetch the access token using the authorization response URL and state
         token = oauth.fetch_token(
             TOKEN_URL, 
             client_secret=CLIENT_SECRET, 
             authorization_response=redirect_url,
             redirect_uri=REDIRECT_URI,
-            state=st.session_state['oauth_state']  # Use the state stored in session
+            state=state  # Use the state passed through URL
         )
         
         # Log the token for debugging purposes
@@ -80,18 +75,20 @@ def authenticate_user():
     # Log the query parameters for debugging
     st.write("Query parameters received:", query_params)
 
-    # Check if Discord has redirected with an authorization code
-    if "code" in query_params:
+    # Check if Discord has redirected with an authorization code and state
+    if "code" in query_params and "state" in query_params:
         auth_code = query_params['code'][0]  # Extract the authorization code
+        state = query_params['state'][0]  # Extract the state parameter
         
-        # Log the authorization code for debugging
+        # Log the authorization code and state for debugging
         st.write(f"Authorization code received: {auth_code}")
+        st.write(f"State received: {state}")
 
         # Manually construct the full redirect URL
         full_redirect_url = REDIRECT_URI + "?" + urlencode(query_params)
 
         # Fetch user info and guild memberships
-        user_info, user_guilds = fetch_discord_user_info(full_redirect_url)
+        user_info, user_guilds = fetch_discord_user_info(full_redirect_url, state)
 
         if user_info and user_guilds:
             # Check if the user is a member of the target guild
@@ -105,7 +102,7 @@ def authenticate_user():
         else:
             st.error("Failed to fetch user information or guilds.")
     else:
-        st.write("No authorization code found in URL.")
+        st.write("No authorization code or state found in URL.")
 
 # Main App Layout
 st.title("Welcome to Diamond Corp")
