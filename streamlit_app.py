@@ -7,9 +7,9 @@ from navigation import make_sidebar
 make_sidebar()
 
 # Discord OAuth2 Credentials
-CLIENT_ID = 'your_client_id'  # Replace with your Discord Client ID
-CLIENT_SECRET = 'your_client_secret'  # Replace with your Discord Client Secret
-REDIRECT_URI = 'your_redirect_uri'  # Replace with your Redirect URI
+#CLIENT_ID = 'your_client_id'  # Replace with your Discord Client ID
+#CLIENT_SECRET = 'your_client_secret'  # Replace with your Discord Client Secret
+#REDIRECT_URI = 'your_redirect_uri'  # Replace with your Redirect URI
 AUTHORIZATION_BASE_URL = 'https://discord.com/api/oauth2/authorize'
 TOKEN_URL = 'https://discord.com/api/oauth2/token'
 USER_URL = 'https://discord.com/api/users/@me'
