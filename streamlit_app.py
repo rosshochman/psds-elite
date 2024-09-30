@@ -61,8 +61,16 @@ def check_guild_membership(user_guilds):
 def authenticate_user():
     query_params = st.experimental_get_query_params()
 
+    # Log the query parameters for debugging
+    st.write("Query parameters received:", query_params)  # Debugging
+
     # Check if Discord has redirected with an authorization code
     if "code" in query_params:
+        auth_code = query_params['code'][0]  # Extract the authorization code
+
+        # Log the authorization code for debugging
+        st.write(f"Authorization code received: {auth_code}")  # Debugging
+
         # Manually construct the full redirect URL
         full_redirect_url = REDIRECT_URI + "?" + urlencode(query_params)
 
