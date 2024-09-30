@@ -1,7 +1,7 @@
 import streamlit as st
 import requests
 from requests_oauthlib import OAuth2Session
-from urllib.parse import urlencode, urlparse, parse_qs
+from urllib.parse import urlencode
 import json
 
 # Navigation sidebar (assuming it's imported)
@@ -39,12 +39,11 @@ def login_with_discord():
 
 def fetch_discord_user_info(redirect_url, state):
     try:
-        # Fetch the access token using the authorization response URL and state
+        # Fetch the access token using the authorization response URL (no explicit redirect_uri needed)
         token = oauth.fetch_token(
             TOKEN_URL, 
             client_secret=CLIENT_SECRET, 
-            authorization_response=redirect_url,
-            redirect_uri=REDIRECT_URI,
+            authorization_response=redirect_url,  # This already includes the redirect_uri
             state=state  # Use the state passed through URL
         )
         
