@@ -33,7 +33,8 @@ def make_sidebar():
         elif get_current_page_name() != "streamlit_app":
             # If anyone tries to access a secret page without being logged in,
             # redirect them to the login page
-            st.switch_page("streamlit_app.py")
+            st.write("Forbidden")
+            #st.switch_page("streamlit_app.py")
 
 
 def logout():
