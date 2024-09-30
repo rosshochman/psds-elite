@@ -3,6 +3,7 @@ import requests
 from requests_oauthlib import OAuth2Session
 from time import sleep
 from urllib.parse import urlencode
+import json
 
 from navigation import make_sidebar
 
@@ -33,16 +34,22 @@ def login_with_discord():
     st.write(f"[Log in with Discord]({authorization_url})")
 
 def fetch_discord_user_info(redirect_url):
-    # Fetch the access token using the authorization response URL
-    token = oauth.fetch_token(TOKEN_URL, client_secret=CLIENT_SECRET, authorization_response=redirect_url)
+    try:
+        # Fetch the access token using the authorization response URL
+        token = oauth.fetch_token(TOKEN_URL, client_secret=CLIENT_SECRET, authorization_response=redirect_url)
+        
+        # Fetch basic user information
+        user_info = requests.get(USER_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
+        
+        # Fetch user's guild memberships
+        user_guilds = requests.get(USER_GUILDS_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
+        
+        return user_info, user_guilds
     
-    # Fetch basic user information
-    user_info = requests.get(USER_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
-    
-    # Fetch user's guild memberships
-    user_guilds = requests.get(USER_GUILDS_URL, headers={'Authorization': f"Bearer {token['access_token']}"}).json()
-    
-    return user_info, user_guilds
+    except Exception as e:
+        st.error(f"Error fetching token or user info: {str(e)}")
+        st.write(f"Full response from Discord: {json.dumps(e.__dict__, indent=4)}")
+        return None, None
 
 def check_guild_membership(user_guilds):
     # Check if the user is part of the target guild
@@ -62,20 +69,21 @@ def authenticate_user():
         # Fetch user info and guild memberships
         user_info, user_guilds = fetch_discord_user_info(full_redirect_url)
 
-        # Check if the user is a member of the target guild
-        if check_guild_membership(user_guilds):
-            st.session_state.logged_in = True
-            st.session_state.user_info = user_info
-            st.success(f"Logged in as {user_info['username']}, and you're a member of the required guild!")
-            sleep(0.5)
-            st.switch_page("pages/page1.py")  # Redirect to another page after successful login
-        else:
-            st.error("You must be a member of the required Discord guild to access this app.")
+        if user_info and user_guilds:
+            # Check if the user is a member of the target guild
+            if check_guild_membership(user_guilds):
+                st.session_state.logged_in = True
+                st.session_state.user_info = user_info
+                st.success(f"Logged in as {user_info['username']}, and you're a member of the required guild!")
+                sleep(0.5)
+                st.switch_page("pages/page1.py")  # Redirect to another page after successful login
+            else:
+                st.error("You must be a member of the required Discord guild to access this app.")
     else:
         st.write("No authorization code found in URL.")
 
 # Main App Layout
-st.title("Welcome to PSDS Elite")
+st.title("Welcome to Diamond Corp")
 
 if st.session_state.logged_in:
     st.success(f"Already logged in as {st.session_state.user_info['username']}")
