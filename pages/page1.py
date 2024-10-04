@@ -9,7 +9,7 @@ df1 = st.empty()
 make_sidebar()
 if st.session_state.get('logged_in', False):
     conn = st.connection('gcs', type=FilesConnection)
-    df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=60)
+    df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
                                      "Name":st.column_config.Column(width="medium"),
