@@ -10,6 +10,10 @@ make_sidebar()
 if st.session_state.get('logged_in', False):
     conn = st.connection('gcs', type=FilesConnection)
     df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=60)
-    df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),"Description":st.column_config.Column(width="medium"),"Name":st.column_config.Column(width="small")}, use_container_width=True, hide_index=True)
+    df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
+                                     "Description":st.column_config.Column(width="medium"),
+                                     "Name":st.column_config.Column(width="medium"),
+                                    "Sector":st.column_config.Column(width="medium"),
+                                    "Industry":st.column_config.Column(width="medium")}, use_container_width=True, hide_index=True)
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
