@@ -9,7 +9,7 @@ df1 = st.empty()
 make_sidebar()
 if st.session_state.get('logged_in', False):
     conn = st.connection('gcs', type=FilesConnection)
-    df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=600)
+    df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=60)
     df1.dataframe(df, hide_index=True)
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
