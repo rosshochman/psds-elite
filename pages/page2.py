@@ -5,13 +5,7 @@ make_sidebar()
 if st.session_state.get('logged_in', False):
     st.write(
         """
-    # 🕵️ EVEN MORE SECRET
-    
-    This is a secret page that only logged-in users can see.
-    
-    Super duper secret.
-    
-    Shh....
+Catalyst Tracker
     
     """
     )
