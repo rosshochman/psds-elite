@@ -4,12 +4,14 @@ from st_files_connection import FilesConnection
 
 st.set_page_config(layout="wide")
 
-df1 = st.empty()
+conn = st.connection('gcs', type=FilesConnection)
+df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
+
+
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
-    conn = st.connection('gcs', type=FilesConnection)
-    df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
+    df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
                                      "Name":st.column_config.Column(width="medium"),
