@@ -2,6 +2,8 @@ from navigation import make_sidebar
 import streamlit as st
 from st_files_connection import FilesConnection
 
+st.set_page_config(layout="wide")
+
 df1 = st.empty()
 
 make_sidebar()
