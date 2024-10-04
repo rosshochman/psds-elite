@@ -2,7 +2,7 @@ from navigation import make_sidebar
 import streamlit as st
 from st_files_connection import FilesConnection
 
-#df1 = st.empty()
+df1 = st.empty()
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
