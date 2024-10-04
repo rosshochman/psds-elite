@@ -4,7 +4,7 @@ from urllib.parse import urlencode, urlparse, parse_qs
 from navigation import make_sidebar
 from time import sleep
 
-
+st.set_page_config(layout="wide")
 
 # Discord OAuth2 credentials
 client_id = st.secrets["CLIENT_ID"]
