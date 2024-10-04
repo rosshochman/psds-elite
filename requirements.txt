@@ -1,3 +1,7 @@
 streamlit
 streamlit-auth0
 requests-oauthlib
+st_files_connection
+google-cloud-storage
+pandas
+matplotlib
