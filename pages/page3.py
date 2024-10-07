@@ -11,7 +11,7 @@ df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
-    st.markdown("Please use the MultiSelect tools to filter for your search criteria.")
+    st.markdown("Data below is for all 13D/G filings for small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2 = st.columns(2)
     if 'ticker' in df.columns:
         unique_tickers = sorted(set(df['ticker']))
