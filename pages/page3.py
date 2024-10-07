@@ -11,6 +11,7 @@ col1, col2 = st.columns(2)
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
+    st.subheader("Please use the MultiSelect tools to filter for your search criteria.")
     if 'ticker' in df.columns:
         unique_tickers = sorted(set(df['ticker']))
         with col1:
