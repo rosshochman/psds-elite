@@ -16,7 +16,7 @@ if st.session_state.get('logged_in', False):
     selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
     if selected_tickers:
         df = df[df['ticker'].isin(selected_tickers)]
-    unique_owners = sorted(set(df['owners1.names']))
+    unique_owners = sorted(set(df['owners1.name']))
     selected_owners = st.multiselect('Select Owners:', options=unique_owners)
     if selected_owners:
         df = df[df['owners1.name'].isin(selected_owners)]
