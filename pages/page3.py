@@ -13,7 +13,7 @@ make_sidebar()
 if st.session_state.get('logged_in', False):
     df1 = st.empty()
     st.subheader("Filter by Ticker")
-    unique_tickers = sorted(set([ticker for sublist in df1['Ticker'] for ticker in sublist]))
+    unique_tickers = sorted(set([ticker for sublist in df1['Symbol'] for ticker in sublist]))
     selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
     df1.dataframe(df,use_container_width=True, hide_index=True)
 if not st.session_state.get('logged_in', False):
