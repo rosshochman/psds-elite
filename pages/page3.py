@@ -12,7 +12,7 @@ df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all 13D/G filings for small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2 = st.columns(2)
+    col1, col2 = st.columns(6)
     if 'ticker' in df.columns:
         df['ticker'] = df['ticker'].astype(str)
         unique_tickers = sorted(set(df['ticker']))
@@ -23,14 +23,14 @@ if st.session_state.get('logged_in', False):
     if 'formType' in df.columns:
         df['formType'] = df['formType'].astype(str)
         unique_form = sorted(set(df['formType']))
-        with col1:
+        with col2:
             selected_form = st.multiselect('Select Form Type:', options=unique_form)
         if selected_form:
             df = df[df['formType'].isin(selected_form)]
     if 'owners1.name' in df.columns:
         df['owners1.name'] = df['owners1.name'].astype(str)
         unique_owners = sorted(set(df['owners1.name']))
-        with col2:
+        with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
             df = df[df['owners1.name'].isin(selected_owners)]
