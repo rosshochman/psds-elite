@@ -11,10 +11,10 @@ df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
-    df1 = st.empty()
     st.subheader("Filter by Ticker")
-    #unique_tickers = sorted(set([ticker for sublist in df['Ticker'] for ticker in sublist]))
-    #selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
+    df1 = st.empty()
+    unique_tickers = sorted(set([ticker for sublist in df['ticker'] for ticker in sublist]))
+    selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
     df1.dataframe(df,use_container_width=True, hide_index=True)
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
