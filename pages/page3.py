@@ -15,9 +15,9 @@ if st.session_state.get('logged_in', False):
     unique_tickers = sorted(set(df['ticker']))
     selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
     if selected_tickers:
-        filtered_df = df[df['ticker'].isin(selected_tickers)]
+        df = df[df['ticker'].isin(selected_tickers)]
     df1 = st.empty()
-    df1.dataframe(filtered_df,use_container_width=True, hide_index=True)
+    df1.dataframe(df,use_container_width=True, hide_index=True)
 
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
