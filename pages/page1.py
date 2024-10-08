@@ -12,7 +12,7 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2, col3= st.columns(3)
+    col1, col2, col3, col4= st.columns(4)
     if 'Ticker' in df.columns:
         df['Ticker'] = df['Ticker'].astype(str)
         unique_tickers = sorted(set(df['Ticker']))
@@ -34,6 +34,20 @@ if st.session_state.get('logged_in', False):
             selected_indsutry = st.multiselect('Select Industry:', options=unique_industry)
         if selected_indsutry:
             df = df[df['Industry'].isin(selected_indsutry)]
+    if 'Description' in df.columns:
+        df['Description'] = df['Description'].astype(str)
+        with col4:
+            st.markdown("Description full text search.")
+            search_text = st.text_input("Enter text to search in the Description column:")
+            if st.button("Search"):
+                if search_text:
+                    filtered_df = df[df['Description'].str.contains(search_text, case=False, na=False)]
+                    df = filtered_df
+                else:
+                    st.warning("Please enter a search term.")
+            if st.button("Reset"):
+                df = df
+            
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
