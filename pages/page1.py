@@ -50,6 +50,7 @@ if st.session_state.get('logged_in', False):
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
                     df = df
+                    search_text = st.text_input("Enter text to search in the Description column:")
             
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
