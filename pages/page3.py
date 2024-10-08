@@ -8,7 +8,8 @@ st.set_page_config(layout="wide")
 conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 
-
+owners_split = df['Owners'].str.split('|', expand=True)
+owners_split.columns = [f'Owners {i+1}' for i in range(owners_split.shape[1])]
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
@@ -34,8 +35,7 @@ if st.session_state.get('logged_in', False):
         with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
-            selected_owners_escaped = re.escape(selected_owners)
-            df = df[df['Owners'].str.contains(selected_owners_escaped, case=False, na=False)]
+            df = owners_split[owners_split.isin([selected_owners]).any(axis=1)]
     df1 = st.empty()
     df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
 
