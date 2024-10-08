@@ -1,6 +1,7 @@
 from navigation import make_sidebar
 import streamlit as st
 from st_files_connection import FilesConnection
+import re
 
 st.set_page_config(layout="wide")
 
@@ -33,7 +34,8 @@ if st.session_state.get('logged_in', False):
         with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
-            df = df[df['Owners'].str.contains(selected_owners, case=False, na=False)]
+            selected_owners_escaped = re.escape(selected_owners)
+            df = df[df['Owners'].str.contains(selected_owners_escaped, case=False, na=False)]
     df1 = st.empty()
     df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
 
