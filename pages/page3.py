@@ -35,7 +35,7 @@ if st.session_state.get('logged_in', False):
         if selected_owners:
             df = df[df['owners1.name'].isin(selected_owners)]
     df1 = st.empty()
-    df1.dataframe(df,use_container_width=True, hide_index=True, height=1000)
+    df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
 
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
