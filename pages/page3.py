@@ -34,7 +34,7 @@ if st.session_state.get('logged_in', False):
             df = df[df['formType'].isin(selected_form)]
     if 'Owners' in df.columns:
         df['Owners'] = df['Owners'].astype(str)
-        unique_owners = sorted(set(owner for owners_list in df['Owners'].str.split('|') for owner in owners_list if owner))
+        unique_owners = sorted(set(owner.strip() for owners_list in df['Owners'].str.split('|') for owner in owners_list if owner.strip()))
         with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
