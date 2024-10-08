@@ -2,6 +2,7 @@ from navigation import make_sidebar
 import streamlit as st
 from st_files_connection import FilesConnection
 import re
+import pandas as pd
 
 st.set_page_config(layout="wide")
 
@@ -10,7 +11,7 @@ df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 
 owners_split = df['Owners'].str.split('|', expand=True)
 owners_split.columns = [f'Owners {i+1}' for i in range(owners_split.shape[1])]
-df = concat([df, owners_split], axis=1)
+df = pd.concat([df, owners_split], axis=1)
 
 
 make_sidebar()
