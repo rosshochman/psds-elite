@@ -45,6 +45,8 @@ if st.session_state.get('logged_in', False):
                     if search_text:
                         df = df[df['Description'].str.contains(search_text, case=False, na=False)]
                         df = df
+                    else:
+                        st.warning("Please enter search term")
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
                     df = df
