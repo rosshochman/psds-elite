@@ -22,6 +22,7 @@ if st.session_state.get('logged_in', False):
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
         if selected_tickers:
             df = df[df['Ticker'].isin(selected_tickers)]
+            st.session_state['filtered_df'] = df
     if 'Sector' in df.columns:
         df = st.session_state['filtered_df']
         df['Sector'] = df['Sector'].astype(str)
@@ -30,6 +31,7 @@ if st.session_state.get('logged_in', False):
             selected_sector = st.multiselect('Select Sector:', options=unique_sector)
         if selected_sector:
             df = df[df['Sector'].isin(selected_sector)]
+            st.session_state['filtered_df'] = df
     if 'Industry' in df.columns:
         df = st.session_state['filtered_df']
         df['Industry'] = df['Industry'].astype(str)
@@ -38,6 +40,7 @@ if st.session_state.get('logged_in', False):
             selected_indsutry = st.multiselect('Select Industry:', options=unique_industry)
         if selected_indsutry:
             df = df[df['Industry'].isin(selected_indsutry)]
+            st.session_state['filtered_df'] = df
     if 'Description' in df.columns:
         df = st.session_state['filtered_df']
         df['Description'] = df['Description'].astype(str)
@@ -50,11 +53,13 @@ if st.session_state.get('logged_in', False):
                     if search_text:
                         df = df[df['Description'].str.contains(search_text, case=False, na=False)]
                         df = df
+                        st.session_state['filtered_df'] = df
                     else:
                         st.warning("Please enter search term")
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
                     df = df
+                    st.session_state['filtered_df'] = df
             
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
