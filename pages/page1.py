@@ -12,7 +12,7 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2, col3, col4= st.columns(4)
+    col1, col2, col3, col4, col5= st.columns(5)
     if 'Ticker' in df.columns:
         df['Ticker'] = df['Ticker'].astype(str)
         unique_tickers = sorted(set(df['Ticker']))
@@ -39,6 +39,7 @@ if st.session_state.get('logged_in', False):
         with col4:
             st.markdown("Description full text search.")
             search_text = st.text_input("Enter text to search in the Description column:")
+        with col5:
             if st.button("Search"):
                 if search_text:
                     filtered_df = df[df['Description'].str.contains(search_text, case=False, na=False)]
