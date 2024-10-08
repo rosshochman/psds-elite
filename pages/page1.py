@@ -37,7 +37,7 @@ if st.session_state.get('logged_in', False):
     if 'Description' in df.columns:
         df['Description'] = df['Description'].astype(str)
         with col4:
-            st.markdown("Description full text search.")
+            #st.markdown("Description full text search.")
             search_text = st.text_input("Enter text to search in the Description column:")
         with col5:
             if st.button("Search"):
