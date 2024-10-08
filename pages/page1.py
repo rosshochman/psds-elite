@@ -39,14 +39,15 @@ if st.session_state.get('logged_in', False):
         with col4:
             #st.markdown("Description full text search.")
             search_text = st.text_input("Enter text to search in the Description column:")
-        with col5:
-            if st.button("Search"):
-                if search_text:
-                    filtered_df = df[df['Description'].str.contains(search_text, case=False, na=False)]
-                    df = filtered_df
-        with col6:
-            if st.button("Reset"):
-                df = df
+            sub_col1, sub_col2= st.columns(2)
+            with sub_col1:
+                if st.button("Search"):
+                    if search_text:
+                        filtered_df = df[df['Description'].str.contains(search_text, case=False, na=False)]
+                        df = filtered_df
+            with sub_col2:
+                if st.button("Reset"):
+                    df = df
             
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
