@@ -7,13 +7,15 @@ st.set_page_config(layout="wide")
 conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
 
-
+if 'filtered_df' not in st.session_state:
+    st.session_state['filtered_df'] = df.copy()
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2, col3, col4= st.columns(4)
     if 'Ticker' in df.columns:
+        df = st.session_state['filtered_df']
         df['Ticker'] = df['Ticker'].astype(str)
         unique_tickers = sorted(set(df['Ticker']))
         with col1:
@@ -21,6 +23,7 @@ if st.session_state.get('logged_in', False):
         if selected_tickers:
             df = df[df['Ticker'].isin(selected_tickers)]
     if 'Sector' in df.columns:
+        df = st.session_state['filtered_df']
         df['Sector'] = df['Sector'].astype(str)
         unique_sector = sorted(set(df['Sector']))
         with col2:
@@ -28,6 +31,7 @@ if st.session_state.get('logged_in', False):
         if selected_sector:
             df = df[df['Sector'].isin(selected_sector)]
     if 'Industry' in df.columns:
+        df = st.session_state['filtered_df']
         df['Industry'] = df['Industry'].astype(str)
         unique_industry = sorted(set(df['Industry']))
         with col3:
@@ -35,6 +39,7 @@ if st.session_state.get('logged_in', False):
         if selected_indsutry:
             df = df[df['Industry'].isin(selected_indsutry)]
     if 'Description' in df.columns:
+        df = st.session_state['filtered_df']
         df['Description'] = df['Description'].astype(str)
         with col4:
             #st.markdown("Description full text search.")
