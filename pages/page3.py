@@ -35,7 +35,7 @@ if st.session_state.get('logged_in', False):
         with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
-            df = owners_split[owners_split.isin([selected_owners]).any(axis=1)]
+            df = df[owners_split.isin([selected_owners]).any(axis=1)]
     df1 = st.empty()
     df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
 
