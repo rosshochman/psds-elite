@@ -43,8 +43,8 @@ if st.session_state.get('logged_in', False):
             with sub_col1:
                 if st.button("Search", use_container_width=True):
                     if search_text:
-                        filtered_df = df[df['Description'].str.contains(search_text, case=False, na=False)]
-                        df = filtered_df
+                        df = df[df['Description'].str.contains(search_text, case=False, na=False)]
+                        df = df
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
                     df = df
