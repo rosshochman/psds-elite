@@ -10,6 +10,8 @@ df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 
 owners_split = df['Owners'].str.split('|', expand=True)
 owners_split.columns = [f'Owners {i+1}' for i in range(owners_split.shape[1])]
+df = pd.concat([df, owners_split], axis=1)
+
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
@@ -35,7 +37,8 @@ if st.session_state.get('logged_in', False):
         with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
-            df = df[owners_split.isin([selected_owners]).any(axis=1)]
+            owner_columns = [col for col in df.columns if col.startswith('Owners ')]
+            df = df[df[owner_columns].isin([selected_owners]).any(axis=1)]
     df1 = st.empty()
     df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
 
