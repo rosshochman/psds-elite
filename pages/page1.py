@@ -38,8 +38,7 @@ if st.session_state.get('logged_in', False):
         df['Description'] = df['Description'].astype(str)
         with col4:
             #st.markdown("Description full text search.")
-            flag = "Enter text to search in the Description column:"
-            search_text = st.text_input(flag)
+            search_text = st.text_input("Enter text to search in the Description column:")
             sub_col1, sub_col2= st.columns(2)
             with sub_col1:
                 if st.button("Search", use_container_width=True):
@@ -51,7 +50,6 @@ if st.session_state.get('logged_in', False):
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
                     df = df
-                    flag = flag
             
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
