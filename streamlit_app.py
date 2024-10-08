@@ -66,16 +66,16 @@ if 'code' in query_params and 'access_token' not in st.session_state:
 
 # Step 2: If user is authenticated, check their guild membership
 if 'access_token' in st.session_state and 'logged_in' not in st.session_state:
-    st.write("Checking your Discord guild memberships...")
+    st.write("Checking your Discord guild memberships for PSDS Elite ...")
     token = st.session_state['access_token']
     guilds = fetch_user_guilds(token)
 
     if is_user_in_guild(guilds):
         st.session_state['logged_in'] = True
-        st.write("You are in the guild! Access granted.")
+        st.write("You are a member of PSDS Elite! Access granted.")
         sleep(1)
     else:
-        st.write("You are not in the required guild. Access denied.")
+        st.write("You are not a member of PSDS Elite. Access denied.")
         st.session_state['logged_in'] = False
         st.stop()
 
