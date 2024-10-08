@@ -15,7 +15,7 @@ if st.session_state.get('logged_in', False):
     col1, col2, col3= st.columns(3)
     if 'Ticker' in df.columns:
         df['Ticker'] = df['Ticker'].astype(str)
-        unique_tickers = sorted(set(df['ticker']))
+        unique_tickers = sorted(set(df['Ticker']))
         with col1:
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
         if selected_tickers:
