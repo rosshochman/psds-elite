@@ -12,7 +12,7 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2, col3, col4, col5= st.columns(5)
+    col1, col2, col3, col4, col5, col6= st.columns(6)
     if 'Ticker' in df.columns:
         df['Ticker'] = df['Ticker'].astype(str)
         unique_tickers = sorted(set(df['Ticker']))
@@ -46,6 +46,7 @@ if st.session_state.get('logged_in', False):
                     df = filtered_df
                 else:
                     st.warning("Please enter a search term.")
+        with col6:
             if st.button("Reset"):
                 df = df
             
