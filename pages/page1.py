@@ -54,6 +54,6 @@ if st.session_state.get('logged_in', False):
                                      "Description":st.column_config.Column(width="medium"),
                                      "Name":st.column_config.Column(width="medium"),
                                     "Sector":st.column_config.Column(width="medium"),
-                                    "Industry":st.column_config.Column(width="medium")}, use_container_width=True, hide_index=True, height=1000)
+                                    "Industry":st.column_config.Column(width="medium")}, use_container_width=True, hide_index=True, height=850)
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
