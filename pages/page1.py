@@ -41,12 +41,12 @@ if st.session_state.get('logged_in', False):
             search_text = st.text_input("Enter text to search in the Description column:")
             sub_col1, sub_col2= st.columns(2)
             with sub_col1:
-                if st.button("Search"):
+                if st.button("Search", use_container_width=True):
                     if search_text:
                         filtered_df = df[df['Description'].str.contains(search_text, case=False, na=False)]
                         df = filtered_df
             with sub_col2:
-                if st.button("Reset"):
+                if st.button("Reset", use_container_width=True):
                     df = df
             
     df1 = st.empty()
