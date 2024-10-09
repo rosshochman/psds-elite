@@ -13,7 +13,7 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2, col3, col4= st.columns(4)
+    col1, col2, col3, col4= st.columns(5)
     if 'Ticker' in df.columns:
         #df = st.session_state['filtered_df']
         df['Ticker'] = df['Ticker'].astype(str)
@@ -41,6 +41,14 @@ if st.session_state.get('logged_in', False):
         if selected_indsutry:
             df = df[df['Industry'].isin(selected_indsutry)]
             #st.session_state['filtered_df'] = df
+    if 'Description' in df.columns:
+        df['Description'] = df['Description'].astype(str)
+        unique_words = sorted(set(word.strip() for description in df['Description'].str.split() for word in description if word.strip()))
+        with col5:
+            selected_words = st.multiselect('Select Key Word in Description:', options=unique_words)
+        if selected_desc:
+            df = df[df['Description'].apply(lambda desc: any(word in desc for word in selected_words))]
+            
     if 'Description' in df.columns:
         #df = st.session_state['filtered_df']
         df['Description'] = df['Description'].astype(str)
