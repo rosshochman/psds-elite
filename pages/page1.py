@@ -57,7 +57,6 @@ if st.session_state.get('logged_in', False):
             search_text = st.text_input("Enter text to search in the Description column:")
             if 'session_search_string' not in st.session_state:
                 st.session_state['session_search_string'] = "No search in progress."
-                st.rerun()
             st.markdown(st.session_state['session_search_string'])
             sub_col1, sub_col2= st.columns(2)
             with sub_col1:
