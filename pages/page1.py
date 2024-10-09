@@ -74,6 +74,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['session_search_string'] = "No search in progress."
                     #st.rerun()
                     df = df
+            st.rerun()
             
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
