@@ -70,6 +70,7 @@ if st.session_state.get('logged_in', False):
                         st.warning("Please enter search term")
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
+                    st.session_state['session_search_string'] = "No search in progress."
                     df = df
             
     df1 = st.empty()
