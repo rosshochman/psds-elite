@@ -30,10 +30,8 @@ if st.session_state.get('logged_in', False):
     if 'selected_owners' not in st.session_state:
         st.session_state['selected_owners'] = []
 
-    # Create a copy of the DataFrame for filtering
+    # Step 1: Apply all current selections and get the filtered DataFrame
     df_filtered = df.copy()
-
-    # Apply filtering based on the current selections in all multiselects, regardless of order
 
     # Apply Owners filter
     if st.session_state['selected_owners']:
@@ -47,8 +45,7 @@ if st.session_state.get('logged_in', False):
     if st.session_state['selected_form']:
         df_filtered = df_filtered[df_filtered['formType'].isin(st.session_state['selected_form'])]
 
-    # Dynamically calculate the options for each multiselect based on the filtered DataFrame
-    # Available options for Tickers, Form Types, and Owners based on the current state of the filtered DataFrame
+    # Step 2: Dynamically calculate the updated options for each multiselect based on the filtered DataFrame
     unique_tickers = sorted(set(df_filtered['ticker']))
     unique_form = sorted(set(df_filtered['formType']))
     
@@ -57,8 +54,7 @@ if st.session_state.get('logged_in', False):
         owner.strip() for owners_list in df_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
     ))
 
-    # Immediately update the options for each multiselect after any selection
-    # This forces recalculation of options dynamically for each filter
+    # Step 3: Render the multiselects using the updated options based on current filters
 
     # Display multiselect for Owners
     with col3:
@@ -87,18 +83,18 @@ if st.session_state.get('logged_in', False):
         )
         st.session_state['selected_form'] = selected_form
 
-    # Apply the filters again based on the new selections (this ensures everything updates correctly)
+    # Step 4: Reapply filters after all selections to display the final DataFrame
     df_final = df.copy()
 
-    # Owners filter
+    # Reapply Owners filter
     if st.session_state['selected_owners']:
         df_final = df_final[df_final['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
 
-    # Ticker filter
+    # Reapply Ticker filter
     if st.session_state['selected_tickers']:
         df_final = df_final[df_final['ticker'].isin(st.session_state['selected_tickers'])]
 
-    # Form Type filter
+    # Reapply Form Type filter
     if st.session_state['selected_form']:
         df_final = df_final[df_final['formType'].isin(st.session_state['selected_form'])]
 
