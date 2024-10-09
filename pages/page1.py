@@ -55,13 +55,15 @@ if st.session_state.get('logged_in', False):
         with col4:
             #st.markdown("Description full text search.")
             search_text = st.text_input("Enter text to search in the Description column:")
-            st.markdown("Currently searching for ")
+            if 'session_search_string' not in st.session_state:
+                st.session_state['session_search_string'] = "No search in progress."
+            st.markdown(st.session_state['session_search_string'])
             sub_col1, sub_col2= st.columns(2)
             with sub_col1:
                 if st.button("Search", use_container_width=True):
                     if search_text:
                         df = df[df['Description'].str.contains(search_text, case=False, na=False)]
-                        st.markdown("Currently searching for "+search_text)
+                        st.session_state['session_search_string'] = "Currently searching for "+search_text
                         df = df
                         #st.session_state['filtered_df'] = df
                     else:
