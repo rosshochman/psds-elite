@@ -30,7 +30,7 @@ if st.session_state.get('logged_in', False):
     if 'selected_owners' not in st.session_state:
         st.session_state['selected_owners'] = []
 
-    # Step 1: Apply current filters to filter the DataFrame incrementally
+    # Step 1: Apply the current selections to filter the DataFrame
     df_filtered = df.copy()
 
     # Apply Owners filter first
@@ -45,25 +45,24 @@ if st.session_state.get('logged_in', False):
     if st.session_state['selected_form']:
         df_filtered = df_filtered[df_filtered['formType'].isin(st.session_state['selected_form'])]
 
-    # Step 2: Dynamically calculate the available options for each multiselect
-    # Now calculate the new options based on the filtered DataFrame
+    # Step 2: Dynamically calculate the available options for each multiselect based on the filtered DataFrame
 
-    # Available Owners
+    # Available Owners (from filtered DataFrame)
     unique_owners = sorted(set(
         owner.strip() for owners_list in df_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
     ))
 
-    # Available Tickers
+    # Available Tickers (from filtered DataFrame)
     unique_tickers = sorted(set(df_filtered['ticker']))
 
-    # Available Form Types
+    # Available Form Types (from filtered DataFrame)
     unique_form = sorted(set(df_filtered['formType']))
 
-    # Step 3: Render the multiselects using the updated options
+    # Step 3: Render the multiselects with the dynamically updated options based on filtered data
     with col3:
         selected_owners = st.multiselect(
             'Select Owners:',
-            options=unique_owners,
+            options=unique_owners,  # These options are based on the filtered DataFrame
             default=st.session_state['selected_owners']
         )
         st.session_state['selected_owners'] = selected_owners
@@ -71,7 +70,7 @@ if st.session_state.get('logged_in', False):
     with col1:
         selected_tickers = st.multiselect(
             'Select Tickers:',
-            options=unique_tickers,
+            options=unique_tickers,  # These options are based on the filtered DataFrame
             default=st.session_state['selected_tickers']
         )
         st.session_state['selected_tickers'] = selected_tickers
@@ -79,13 +78,12 @@ if st.session_state.get('logged_in', False):
     with col2:
         selected_form = st.multiselect(
             'Select Form Type:',
-            options=unique_form,
+            options=unique_form,  # These options are based on the filtered DataFrame
             default=st.session_state['selected_form']
         )
         st.session_state['selected_form'] = selected_form
 
-    # Step 4: Reapply filters and display the final filtered DataFrame
-    # This is the final filter to display based on the current selections
+    # Step 4: Display the final filtered DataFrame based on the current selections
     df_final = df.copy()
 
     if st.session_state['selected_owners']:
