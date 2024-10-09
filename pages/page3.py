@@ -51,7 +51,9 @@ if st.session_state.get('logged_in', False):
     # Available options for Tickers, Form Types, and Owners based on the current state of the filtered DataFrame
     unique_tickers = sorted(set(df_filtered['ticker']))
     unique_form = sorted(set(df_filtered['formType']))
-    unique_owners = sorted(set(owner.strip() for owners_list in df_filtered['Owners'].str.split('|') for owner in owners_list if owner.strip()))
+    unique_owners = sorted(set(
+        owner.strip() for owners_list in df_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
+    ))
 
     # Display multiselect for Owners
     with col3:
