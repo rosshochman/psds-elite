@@ -30,44 +30,13 @@ if st.session_state.get('logged_in', False):
     if 'selected_owners' not in st.session_state:
         st.session_state['selected_owners'] = []
 
-    # Filtering for ticker multiselect
-    if 'ticker' in df.columns:
-        df['ticker'] = df['ticker'].astype(str)
-        unique_tickers = sorted(set(df['ticker']))
-        
-        # Display multiselect for tickers
-        with col1:
-            st.session_state['selected_tickers'] = st.multiselect(
-                'Select Tickers:',
-                options=unique_tickers,
-                default=st.session_state['selected_tickers']
-            )
-        
-        # Filter the DataFrame based on ticker selection
-        if st.session_state['selected_tickers']:
-            df = df[df['ticker'].isin(st.session_state['selected_tickers'])]
-    
-    # Filtering for formType multiselect based on the filtered DataFrame (after ticker filtering)
-    if 'formType' in df.columns:
-        df['formType'] = df['formType'].astype(str)
-        unique_form = sorted(set(df['formType']))  # Get formType options based on current filtered DataFrame
-        
-        with col2:
-            st.session_state['selected_form'] = st.multiselect(
-                'Select Form Type:',
-                options=unique_form,  # Dynamic options based on filtered DataFrame
-                default=st.session_state['selected_form']
-            )
-        
-        # Further filter the DataFrame based on formType selection
-        if st.session_state['selected_form']:
-            df = df[df['formType'].isin(st.session_state['selected_form'])]
-    
-    # Filtering for Owners multiselect based on the filtered DataFrame (after ticker and formType filtering)
+    # Base filtering based on selected Tickers
+    df_filtered = df.copy()
+
+    # Filtering for Owners multiselect (since it was causing issues)
     if 'Owners' in df.columns:
-        df['Owners'] = df['Owners'].astype(str)
-        # Split Owners into individual components based on the current filtered DataFrame
-        unique_owners = sorted(set(owner.strip() for owners_list in df['Owners'].str.split('|') for owner in owners_list if owner.strip()))
+        df_filtered['Owners'] = df_filtered['Owners'].astype(str)
+        unique_owners = sorted(set(owner.strip() for owners_list in df_filtered['Owners'].str.split('|') for owner in owners_list if owner.strip()))
         
         with col3:
             st.session_state['selected_owners'] = st.multiselect(
@@ -76,13 +45,45 @@ if st.session_state.get('logged_in', False):
                 default=st.session_state['selected_owners']
             )
         
-        # Further filter the DataFrame based on Owners selection
+        # Filter based on Owners
         if st.session_state['selected_owners']:
-            df = df[df['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']))]
+            df_filtered = df_filtered[df_filtered['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']))]
+    
+    # Filtering for Ticker multiselect based on filtered DataFrame (after Owners filtering)
+    if 'ticker' in df_filtered.columns:
+        df_filtered['ticker'] = df_filtered['ticker'].astype(str)
+        unique_tickers = sorted(set(df_filtered['ticker']))
+        
+        with col1:
+            st.session_state['selected_tickers'] = st.multiselect(
+                'Select Tickers:',
+                options=unique_tickers,  # Dynamic options based on the already filtered DataFrame
+                default=st.session_state['selected_tickers']
+            )
+        
+        # Filter the DataFrame based on ticker selection
+        if st.session_state['selected_tickers']:
+            df_filtered = df_filtered[df_filtered['ticker'].isin(st.session_state['selected_tickers'])]
+    
+    # Filtering for formType multiselect based on the filtered DataFrame (after Owners and Ticker filtering)
+    if 'formType' in df_filtered.columns:
+        df_filtered['formType'] = df_filtered['formType'].astype(str)
+        unique_form = sorted(set(df_filtered['formType']))  # Get formType options based on current filtered DataFrame
+        
+        with col2:
+            st.session_state['selected_form'] = st.multiselect(
+                'Select Form Type:',
+                options=unique_form,  # Dynamic options based on the filtered DataFrame
+                default=st.session_state['selected_form']
+            )
+        
+        # Further filter the DataFrame based on formType selection
+        if st.session_state['selected_form']:
+            df_filtered = df_filtered[df_filtered['formType'].isin(st.session_state['selected_form'])]
 
     # Display the filtered DataFrame
     df1 = st.empty()
-    df1.dataframe(df, use_container_width=True, hide_index=True, height=750)
+    df1.dataframe(df_filtered, use_container_width=True, hide_index=True, height=750)
 
 else:
     st.write("Forbidden")
