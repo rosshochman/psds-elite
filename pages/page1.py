@@ -65,14 +65,14 @@ if st.session_state.get('logged_in', False):
                         st.session_state['session_search_string'] = "Currently searching for "+search_text
                         df = df[df['Description'].str.contains(search_text, case=False, na=False)]
                         df = df
-                        st.rerun()
+                        #st.rerun()
                         #st.session_state['filtered_df'] = df
                     else:
                         st.warning("Please enter search term")
             with sub_col2:
                 if st.button("Reset", use_container_width=True):
                     st.session_state['session_search_string'] = "No search in progress."
-                    st.rerun()
+                    #st.rerun()
                     df = df
             
     df1 = st.empty()
