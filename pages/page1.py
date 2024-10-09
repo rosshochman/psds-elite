@@ -62,9 +62,10 @@ if st.session_state.get('logged_in', False):
             with sub_col1:
                 if st.button("Search", use_container_width=True):
                     if search_text:
-                        st.session_state['session_search_string'] = "Currently searching for "+search_text
+                        #st.session_state['session_search_string'] = "Currently searching for "+search_text
                         df = df[df['Description'].str.contains(search_text, case=False, na=False)]
                         df = df
+                        st.session_state['session_search_string'] = "Currently searching for "+search_text
                         #st.rerun()
                         #st.session_state['filtered_df'] = df
                     else:
