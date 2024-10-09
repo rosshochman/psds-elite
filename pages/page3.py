@@ -82,10 +82,10 @@ if st.session_state.get('logged_in', False):
             default=st.session_state['selected_form']
         )
         st.session_state['selected_form'] = selected_form
-
+    df_final2 = df_final
     # Step 4: Display the final filtered DataFrame
     df1 = st.empty()
-    df1.dataframe(df_final, use_container_width=True, hide_index=True, height=750)
+    df1.dataframe(df_final2, use_container_width=True, hide_index=True, height=750)
 
 else:
     st.write("Forbidden")
