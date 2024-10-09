@@ -46,7 +46,7 @@ if st.session_state.get('logged_in', False):
         unique_words = sorted(set(word.strip() for description in df['Description'].str.split() for word in description if word.strip()))
         with col5:
             selected_words = st.multiselect('Select Key Word in Description:', options=unique_words)
-        if selected_desc:
+        if selected_words:
             df = df[df['Description'].apply(lambda desc: any(word in desc for word in selected_words))]
             
     if 'Description' in df.columns:
