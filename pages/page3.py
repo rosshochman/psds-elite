@@ -57,29 +57,35 @@ if st.session_state.get('logged_in', False):
         owner.strip() for owners_list in df_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
     ))
 
+    # Immediately update the options for each multiselect after any selection
+    # This forces recalculation of options dynamically for each filter
+
     # Display multiselect for Owners
     with col3:
-        st.session_state['selected_owners'] = st.multiselect(
+        selected_owners = st.multiselect(
             'Select Owners:',
             options=unique_owners,  # Dynamically updated based on filtered DataFrame
             default=st.session_state['selected_owners']
         )
+        st.session_state['selected_owners'] = selected_owners
 
     # Display multiselect for Tickers
     with col1:
-        st.session_state['selected_tickers'] = st.multiselect(
+        selected_tickers = st.multiselect(
             'Select Tickers:',
             options=unique_tickers,  # Dynamically updated based on the already filtered DataFrame
             default=st.session_state['selected_tickers']
         )
+        st.session_state['selected_tickers'] = selected_tickers
 
     # Display multiselect for Form Type
     with col2:
-        st.session_state['selected_form'] = st.multiselect(
+        selected_form = st.multiselect(
             'Select Form Type:',
             options=unique_form,  # Dynamically updated based on the filtered DataFrame
             default=st.session_state['selected_form']
         )
+        st.session_state['selected_form'] = selected_form
 
     # Apply the filters again based on the new selections (this ensures everything updates correctly)
     df_final = df.copy()
