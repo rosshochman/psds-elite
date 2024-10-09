@@ -17,30 +17,62 @@ df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all 13D/G filings for small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2, col3= st.columns(3)
+    
+    col1, col2, col3 = st.columns(3)
+    
+    # Initialize session state for selected options if not already set
+    if 'selected_tickers' not in st.session_state:
+        st.session_state['selected_tickers'] = []
+        
+    if 'selected_form' not in st.session_state:
+        st.session_state['selected_form'] = []
+        
+    if 'selected_owners' not in st.session_state:
+        st.session_state['selected_owners'] = []
+
+    # Filtering for ticker multiselect
     if 'ticker' in df.columns:
         df['ticker'] = df['ticker'].astype(str)
         unique_tickers = sorted(set(df['ticker']))
         with col1:
-            selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
-        if selected_tickers:
-            df = df[df['ticker'].isin(selected_tickers)]
+            st.session_state['selected_tickers'] = st.multiselect(
+                'Select Tickers:',
+                options=unique_tickers,
+                default=st.session_state['selected_tickers']
+            )
+        if st.session_state['selected_tickers']:
+            df = df[df['ticker'].isin(st.session_state['selected_tickers'])]
+    
+    # Filtering for formType multiselect
     if 'formType' in df.columns:
         df['formType'] = df['formType'].astype(str)
         unique_form = sorted(set(df['formType']))
         with col2:
-            selected_form = st.multiselect('Select Form Type:', options=unique_form)
-        if selected_form:
-            df = df[df['formType'].isin(selected_form)]
+            st.session_state['selected_form'] = st.multiselect(
+                'Select Form Type:',
+                options=unique_form,
+                default=st.session_state['selected_form']
+            )
+        if st.session_state['selected_form']:
+            df = df[df['formType'].isin(st.session_state['selected_form'])]
+    
+    # Filtering for Owners multiselect
     if 'Owners' in df.columns:
         df['Owners'] = df['Owners'].astype(str)
+        # Split Owners into individual components
         unique_owners = sorted(set(owner.strip() for owners_list in df['Owners'].str.split('|') for owner in owners_list if owner.strip()))
         with col3:
-            selected_owners = st.multiselect('Select Owners:', options=unique_owners)
-        if selected_owners:
-            df = df[df['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in selected_owners))]
-    df1 = st.empty()
-    df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
+            st.session_state['selected_owners'] = st.multiselect(
+                'Select Owners:',
+                options=unique_owners,
+                default=st.session_state['selected_owners']
+            )
+        if st.session_state['selected_owners']:
+            df = df[df['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']))]
 
-if not st.session_state.get('logged_in', False):
+    # Display the filtered DataFrame
+    df1 = st.empty()
+    df1.dataframe(df, use_container_width=True, hide_index=True, height=750)
+
+else:
     st.write("Forbidden")
