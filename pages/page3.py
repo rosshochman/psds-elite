@@ -37,7 +37,7 @@ if st.session_state.get('logged_in', False):
 
     # Apply Owners filter
     if st.session_state['selected_owners']:
-        df_filtered = df_filtered[df_filtered['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']))]
+        df_filtered = df_filtered[df_filtered['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
 
     # Apply Ticker filter
     if st.session_state['selected_tickers']:
@@ -51,6 +51,8 @@ if st.session_state.get('logged_in', False):
     # Available options for Tickers, Form Types, and Owners based on the current state of the filtered DataFrame
     unique_tickers = sorted(set(df_filtered['ticker']))
     unique_form = sorted(set(df_filtered['formType']))
+    
+    # Handle NaN values in Owners and split based on '|'
     unique_owners = sorted(set(
         owner.strip() for owners_list in df_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
     ))
@@ -67,7 +69,7 @@ if st.session_state.get('logged_in', False):
     with col1:
         st.session_state['selected_tickers'] = st.multiselect(
             'Select Tickers:',
-            options=unique_tickers,  # Dynamically updated based on filtered DataFrame
+            options=unique_tickers,  # Dynamically updated based on the already filtered DataFrame
             default=st.session_state['selected_tickers']
         )
 
@@ -75,7 +77,7 @@ if st.session_state.get('logged_in', False):
     with col2:
         st.session_state['selected_form'] = st.multiselect(
             'Select Form Type:',
-            options=unique_form,  # Dynamically updated based on filtered DataFrame
+            options=unique_form,  # Dynamically updated based on the filtered DataFrame
             default=st.session_state['selected_form']
         )
 
@@ -84,7 +86,7 @@ if st.session_state.get('logged_in', False):
 
     # Owners filter
     if st.session_state['selected_owners']:
-        df_final = df_final[df_final['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']))]
+        df_final = df_final[df_final['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
 
     # Ticker filter
     if st.session_state['selected_tickers']:
