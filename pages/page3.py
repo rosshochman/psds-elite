@@ -19,7 +19,7 @@ if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all 13D/G filings for small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     
     col1, col2, col3 = st.columns(3)
-    
+
     # Initialize session state for selected options if not already set
     if 'selected_tickers' not in st.session_state:
         st.session_state['selected_tickers'] = []
@@ -30,71 +30,69 @@ if st.session_state.get('logged_in', False):
     if 'selected_owners' not in st.session_state:
         st.session_state['selected_owners'] = []
 
-    # Step 1: Apply all current selections and get the filtered DataFrame
-    df_filtered = df.copy()
+    # Step 1: Dynamically calculate the available options for each multiselect
+    df_unfiltered = df.copy()
 
-    # Apply Owners filter
-    if st.session_state['selected_owners']:
-        df_filtered = df_filtered[df_filtered['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
-
-    # Apply Ticker filter
+    # Available Owners based on the current DataFrame ignoring the Owners filter
+    df_owners_filtered = df_unfiltered.copy()
     if st.session_state['selected_tickers']:
-        df_filtered = df_filtered[df_filtered['ticker'].isin(st.session_state['selected_tickers'])]
-
-    # Apply Form Type filter
+        df_owners_filtered = df_owners_filtered[df_owners_filtered['ticker'].isin(st.session_state['selected_tickers'])]
     if st.session_state['selected_form']:
-        df_filtered = df_filtered[df_filtered['formType'].isin(st.session_state['selected_form'])]
-
-    # Step 2: Dynamically calculate the updated options for each multiselect based on the filtered DataFrame
-    unique_tickers = sorted(set(df_filtered['ticker']))
-    unique_form = sorted(set(df_filtered['formType']))
-    
-    # Handle NaN values in Owners and split based on '|'
+        df_owners_filtered = df_owners_filtered[df_owners_filtered['formType'].isin(st.session_state['selected_form'])]
     unique_owners = sorted(set(
-        owner.strip() for owners_list in df_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
+        owner.strip() for owners_list in df_owners_filtered['Owners'].fillna('').str.split('|') for owner in owners_list if owner.strip()
     ))
 
-    # Step 3: Render the multiselects using the updated options based on current filters
+    # Available Tickers based on the current DataFrame ignoring the Ticker filter
+    df_tickers_filtered = df_unfiltered.copy()
+    if st.session_state['selected_owners']:
+        df_tickers_filtered = df_tickers_filtered[df_tickers_filtered['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
+    if st.session_state['selected_form']:
+        df_tickers_filtered = df_tickers_filtered[df_tickers_filtered['formType'].isin(st.session_state['selected_form'])]
+    unique_tickers = sorted(set(df_tickers_filtered['ticker']))
 
-    # Display multiselect for Owners
+    # Available Form Types based on the current DataFrame ignoring the Form Type filter
+    df_form_filtered = df_unfiltered.copy()
+    if st.session_state['selected_owners']:
+        df_form_filtered = df_form_filtered[df_form_filtered['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
+    if st.session_state['selected_tickers']:
+        df_form_filtered = df_form_filtered[df_form_filtered['ticker'].isin(st.session_state['selected_tickers'])]
+    unique_form = sorted(set(df_form_filtered['formType']))
+
+    # Step 2: Render the multiselects using the updated options
     with col3:
         selected_owners = st.multiselect(
             'Select Owners:',
-            options=unique_owners,  # Dynamically updated based on filtered DataFrame
+            options=unique_owners,
             default=st.session_state['selected_owners']
         )
         st.session_state['selected_owners'] = selected_owners
 
-    # Display multiselect for Tickers
     with col1:
         selected_tickers = st.multiselect(
             'Select Tickers:',
-            options=unique_tickers,  # Dynamically updated based on the already filtered DataFrame
+            options=unique_tickers,
             default=st.session_state['selected_tickers']
         )
         st.session_state['selected_tickers'] = selected_tickers
 
-    # Display multiselect for Form Type
     with col2:
         selected_form = st.multiselect(
             'Select Form Type:',
-            options=unique_form,  # Dynamically updated based on the filtered DataFrame
+            options=unique_form,
             default=st.session_state['selected_form']
         )
         st.session_state['selected_form'] = selected_form
 
-    # Step 4: Reapply filters after all selections to display the final DataFrame
+    # Step 3: Apply the filters to the DataFrame based on the final selections
     df_final = df.copy()
 
-    # Reapply Owners filter
     if st.session_state['selected_owners']:
         df_final = df_final[df_final['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']) if pd.notnull(x) else False)]
-
-    # Reapply Ticker filter
+    
     if st.session_state['selected_tickers']:
         df_final = df_final[df_final['ticker'].isin(st.session_state['selected_tickers'])]
 
-    # Reapply Form Type filter
     if st.session_state['selected_form']:
         df_final = df_final[df_final['formType'].isin(st.session_state['selected_form'])]
 
