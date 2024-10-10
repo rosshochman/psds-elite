@@ -41,7 +41,7 @@ if st.session_state.get('logged_in', False):
             df = df[df['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in selected_owners))]
     df1 = st.empty()
     df1.dataframe(df, column_config={"HTML Link": st.column_config.LinkColumn("HTML Link", width="small"),
-                                     "Place":st.column_config.Column(width="medium"),
+                                     "Place":st.column_config.Column(width="small"),
                                      "Filing Link": st.column_config.LinkColumn("Filing Link", width="small")},
                                      use_container_width=True, hide_index=True, height=750)
 
