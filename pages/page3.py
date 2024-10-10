@@ -40,7 +40,11 @@ if st.session_state.get('logged_in', False):
         if selected_owners:
             df = df[df['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in selected_owners))]
     df1 = st.empty()
-    df1.dataframe(df,use_container_width=True, hide_index=True, height=750)
+    df1.dataframe(df, column_config={"HTML Link": st.column_config.LinkColumn("HTML Link"),
+                                     "HTML Link":st.column_config.Column(width="small"),
+                                     "Filing Link": st.column_config.LinkColumn("Filing Link"),
+                                     "Filing Link":st.column_config.Column(width="small"),
+                                     use_container_width=True, hide_index=True, height=750)
 
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
