@@ -32,13 +32,13 @@ if st.session_state.get('logged_in', False):
             selected_form = st.multiselect('Select Form Type:', options=unique_form)
         if selected_form:
             df = df[df['Form Type'].isin(selected_form)]
-    if 'Owners' in df.columns:
-        df['Owners'] = df['Owners'].astype(str)
-        unique_owners = sorted(set(owner.strip() for owners_list in df['Owners'].str.split('|') for owner in owners_list if owner.strip()))
+    if 'All Owners' in df.columns:
+        df['All Owners'] = df['All Owners'].astype(str)
+        unique_owners = sorted(set(owner.strip() for owners_list in df['All Owners'].str.split('|') for owner in owners_list if owner.strip()))
         with col3:
             selected_owners = st.multiselect('Select Owners:', options=unique_owners)
         if selected_owners:
-            df = df[df['Owners'].apply(lambda x: any(term.lower() in x.lower() for term in selected_owners))]
+            df = df[df['All Owners'].apply(lambda x: any(term.lower() in x.lower() for term in selected_owners))]
     df1 = st.empty()
     df1.dataframe(df, column_config={"Folder Link": st.column_config.LinkColumn("Folder Link", width="small"),
                                      "Place":st.column_config.Column(width="medium"),
