@@ -4,7 +4,6 @@ from st_files_connection import FilesConnection
 import pandas as pd
 
 st.set_page_config(layout="wide")
-re_run_flag = "no"
 conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
 #df['MarketCap'] = df['MarketCap'].fillna(0)
@@ -77,8 +76,6 @@ if st.session_state.get('logged_in', False):
             selected_country = st.multiselect('Select State/Country:', options=unique_country, default=st.session_state['selected_country'])
             if selected_country != st.session_state['selected_country']:
                 st.session_state['selected_country'] = selected_country
-                re_run_flag = "yes"
-            if re_run_flag == "yes":
                 st.rerun()
 
 
