@@ -12,69 +12,48 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
+    if 'selected_tickers' not in st.session_state:
+        st.session_state['selected_tickers'] = []
+    if 'selected_sector' not in st.session_state:
+        st.session_state['selected_sector'] = []
+    if 'selected_ind' not in st.session_state:
+        st.session_state['selected_ind'] = []
+
+    filtered_df = df.copy()
+
+    if st.session_state['selected_tickers']:
+        filtered_df = filtered_df[filtered_df['Ticker'].isin(st.session_state['selected_tickers'])]
+    if st.session_state['selected_sector']:
+        filtered_df = filtered_df[filtered_df['Sector'].isin(st.session_state['selected_sector'])]
+    if st.session_state['selected_ind']:
+        filtered_df = filtered_df[filtered_df['Industry'].isin(st.session_state['selected_ind'])]
+
+    #start here
+
+    unique_tickers = sorted(set(filtered_df['Ticker'].astype(str)))
+    unique_sector = sorted(set(filtered_df['Sector'].astype(str)))
+    unique_ind = sorted(set(filtered_df['Industry'].astype(str)))
+    
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2, col3, col4= st.columns(4)
     if 'Ticker' in df.columns:
-        #df = st.session_state['filtered_df']
-        df['Ticker'] = df['Ticker'].astype(str)
-        unique_tickers = sorted(set(df['Ticker']))
         with col1:
-            selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers)
-        if selected_tickers:
-            df = df[df['Ticker'].isin(selected_tickers)]
-            st.session_state['session_search_string'] = "No search in progress."
-            #st.session_state['filtered_df'] = df
+            selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
+        if selected_tickers != st.session_state['selected_tickers']:
+            st.session_state['selected_tickers'] = selected_tickers
+            st.rerun()
     if 'Sector' in df.columns:
-        #df = st.session_state['filtered_df']
-        df['Sector'] = df['Sector'].astype(str)
-        unique_sector = sorted(set(df['Sector']))
         with col2:
-            selected_sector = st.multiselect('Select Sector:', options=unique_sector)
-        if selected_sector:
-            df = df[df['Sector'].isin(selected_sector)]
-            st.session_state['session_search_string'] = "No search in progress."
-            #st.session_state['filtered_df'] = df
+            selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector])
+        if selected_sector != st.session_state['selected_sector']:
+            st.session_state['selected_sector'] = selected_sector
+            st.rerun()
     if 'Industry' in df.columns:
-        #df = st.session_state['filtered_df']
-        df['Industry'] = df['Industry'].astype(str)
-        unique_industry = sorted(set(df['Industry']))
         with col3:
-            selected_indsutry = st.multiselect('Select Industry:', options=unique_industry)
-        if selected_indsutry:
-            df = df[df['Industry'].isin(selected_indsutry)]
-            st.session_state['session_search_string'] = "No search in progress."
-            #st.session_state['filtered_df'] = df
-            
-    if 'Description' in df.columns:
-        #df = st.session_state['filtered_df']
-        df['Description'] = df['Description'].astype(str)
-        with col4:
-            #st.markdown("Description full text search.")
-            search_text = st.text_input("Enter text to search in the Description column:")
-            if 'session_search_string' not in st.session_state:
-                st.session_state['session_search_string'] = "No search in progress."
-            sub_col1, sub_col2= st.columns(2)
-            with sub_col1:
-                if st.button("Search", use_container_width=True):
-                    if search_text:
-                        #st.session_state['session_search_string'] = "Currently searching for "+search_text
-                        df = df[df['Description'].str.contains(search_text, case=False, na=False)]
-                        df = df
-                        st.session_state['session_search_string'] = "Currently searching for "+search_text
-                        #st.markdown(st.session_state['session_search_string'])
-                        #st.rerun()
-                        #st.session_state['filtered_df'] = df
-                    else:
-                        st.warning("Please enter search term")
-            with sub_col2:
-                if st.button("Reset", use_container_width=True):
-                    st.session_state['session_search_string'] = "No search in progress."
-                    #st.markdown(st.session_state['session_search_string'])
-                    #st.rerun()
-                    df = df
-            st.markdown(st.session_state['session_search_string'])
-
-            
+            selected_ind = st.multiselect('Select Industry:', options=selected_ind, default=st.session_state['selected_ind])
+        if selected_ind != st.session_state['selected_ind']:
+            st.session_state['selected_ind'] = selected_ind
+            st.rerun()
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
