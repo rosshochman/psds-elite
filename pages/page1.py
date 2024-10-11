@@ -68,7 +68,7 @@ if st.session_state.get('logged_in', False):
                 st.rerun()
     if 'State Incorporation' in df.columns:
         with col4:
-            unique_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=st.session_state['selected_inc'])
+            selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=st.session_state['selected_inc'])
             if selected_inc != st.session_state['selected_inc']:
                 st.session_state['selected_inc'] = selected_inc
                 st.rerun()
