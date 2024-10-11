@@ -88,15 +88,6 @@ if st.session_state.get('logged_in', False):
                 st.session_state['marketcap_range'] = marketcap_range
                 st.rerun()
 
-    # Display the filtered DataFrame
-    df1 = st.empty()
-    df1.dataframe(filtered_df, column_config={"Website": st.column_config.LinkColumn("Website"),
-                                              "Description": st.column_config.Column(width="medium"),
-                                              "Name": st.column_config.Column(width="medium"),
-                                              "Sector": st.column_config.Column(width="medium"),
-                                              "Industry": st.column_config.Column(width="medium")},
-                                              use_container_width=True, hide_index=True, height=750)
-
     df1 = st.empty()
     df1.dataframe(filtered_df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
