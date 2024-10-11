@@ -77,6 +77,8 @@ if st.session_state.get('logged_in', False):
             selected_country = st.multiselect('Select State/Country:', options=unique_country, default=st.session_state['selected_country'])
             if selected_country != st.session_state['selected_country']:
                 st.session_state['selected_country'] = selected_country
+                rerun_flag = "yes"
+            if re_run_flag = "yes":
                 st.rerun()
 
 
