@@ -51,10 +51,6 @@ if st.session_state.get('logged_in', False):
     unique_tickers = sorted(set(filtered_df['Ticker'].astype(str)))
     unique_sector = sorted(set(filtered_df['Sector'].astype(str)))
     unique_ind = sorted(set(filtered_df['Industry'].astype(str)))
-    float_min = int(filtered_df['Float'].min())
-    float_max = int(filtered_df['Float'].max())
-    marketcap_min = int(filtered_df['MarketCap'].min())
-    marketcap_max = int(filtered_df['MarketCap'].max())
     
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2, col3, col4, col5= st.columns(5)
