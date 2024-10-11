@@ -24,7 +24,13 @@ if st.session_state.get('logged_in', False):
     if 'float_range' not in st.session_state:
         st.session_state['float_range'] = (df['Float'].min(), df['Float'].max())
     if 'marketcap_range' not in st.session_state:
-        st.session_state['marketcap_range'] = (df['MarketCap'].min(), df['MarketCap'].max())
+        marketcap_min = df['MarketCap'].min()
+        marketcap_max = df['MarketCap'].max()
+        if pd.isna(marketcap_min):
+            marketcap_min = 0
+        if pd.isna(marketcap_max):
+            marketcap_max = 1 
+        st.session_state['marketcap_range'] = (marketcap_min, marketcap_max)
 
 
     filtered_df = df.copy()
