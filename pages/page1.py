@@ -28,7 +28,7 @@ if st.session_state.get('logged_in', False):
     if 'marketcap_min' not in st.session_state:
         marketcap_min = df['MarketCap'].min()
         st.session_state['marketcap_min'] = int(marketcap_min)
-    if 'marketcap_min' not in st.session_state:
+    if 'marketcap_max' not in st.session_state:
         marketcap_max = df['MarketCap'].max()
         st.session_state['marketcap_max'] = int(marketcap_max)
 
