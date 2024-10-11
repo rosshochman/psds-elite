@@ -36,7 +36,7 @@ if st.session_state.get('logged_in', False):
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
             if selected_tickers != st.session_state['selected_tickers']:
                 st.session_state['selected_tickers'] = selected_tickers
-                st.experimental_rerun()
+                st.rerun()
     
     # Sector multiselect
     if 'Sector' in df.columns:
@@ -46,7 +46,7 @@ if st.session_state.get('logged_in', False):
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector'])
             if selected_sector != st.session_state['selected_sector']:
                 st.session_state['selected_sector'] = selected_sector
-                st.experimental_rerun()
+                st.rerun()
     
     # Industry multiselect
     if 'Industry' in df.columns:
@@ -56,7 +56,7 @@ if st.session_state.get('logged_in', False):
             selected_industry = st.multiselect('Select Industry:', options=unique_industry, default=st.session_state['selected_industry'])
             if selected_industry != st.session_state['selected_industry']:
                 st.session_state['selected_industry'] = selected_industry
-                st.experimental_rerun()
+                st.rerun()
 
     # Description search
     if 'Description' in df.columns:
@@ -72,7 +72,7 @@ if st.session_state.get('logged_in', False):
                     if st.session_state['search_text']:
                         df = df[df['Description'].str.contains(st.session_state['search_text'], case=False, na=False)]
                         st.session_state['session_search_string'] = "Currently searching for " + st.session_state['search_text']
-                        st.experimental_rerun()
+                        st.rerun()
                     else:
                         st.warning("Please enter a search term")
             
@@ -80,7 +80,7 @@ if st.session_state.get('logged_in', False):
                 if st.button("Reset", use_container_width=True):
                     st.session_state['search_text'] = ""
                     st.session_state['session_search_string'] = "No search in progress."
-                    st.experimental_rerun()
+                    st.rerun()
             
             st.markdown(st.session_state['session_search_string'])
     
