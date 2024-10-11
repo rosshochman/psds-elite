@@ -31,7 +31,7 @@ if st.session_state.get('logged_in', False):
     if st.session_state['selected_ind']:
         filtered_df = filtered_df[filtered_df['Industry'].isin(st.session_state['selected_ind'])]
     if st.session_state['selected_inc']:
-        filtered_df = filtered_df[filtered_df['State Incorporation'].isin(st.session_state['selected_inc'])]
+        filtered_df = filtered_df[filtered_df['State of Incorporation'].isin(st.session_state['selected_inc'])]
     if st.session_state['selected_country']:
         filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
 
