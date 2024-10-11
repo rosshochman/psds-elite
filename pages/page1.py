@@ -53,25 +53,25 @@ if st.session_state.get('logged_in', False):
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
             if selected_tickers != st.session_state['selected_tickers']:
                 st.session_state['selected_tickers'] = selected_tickers
-                st.rerun()
+                #st.rerun()
     if 'Sector' in df.columns:
         with col2:
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector'])
             if selected_sector != st.session_state['selected_sector']:
                 st.session_state['selected_sector'] = selected_sector
-                st.rerun()
+                #st.rerun()
     if 'Industry' in df.columns:
         with col3:
             selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=st.session_state['selected_ind'])
             if selected_ind != st.session_state['selected_ind']:
                 st.session_state['selected_ind'] = selected_ind
-                st.rerun()
+                #st.rerun()
     if 'State Incorporation' in df.columns:
         with col4:
             selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=st.session_state['selected_inc'])
             if selected_inc != st.session_state['selected_inc']:
                 st.session_state['selected_inc'] = selected_inc
-                st.rerun()
+                #st.rerun()
     if 'State/Country' in df.columns:
         with col5:
             selected_country = st.multiselect('Select State/Country:', options=unique_country, default=st.session_state['selected_country'])
