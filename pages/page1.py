@@ -35,9 +35,10 @@ if st.session_state.get('logged_in', False):
         filtered_df = filtered_df[filtered_df['Sector'].isin(st.session_state['selected_sector'])]
     if st.session_state['selected_ind']:
         filtered_df = filtered_df[filtered_df['Industry'].isin(st.session_state['selected_ind'])]
-        
-    filtered_df = filtered_df[(filtered_df['Float'] >= st.session_state['float_range'][0]) & (filtered_df['Float'] <= st.session_state['float_range'][1])]
-    filtered_df = filtered_df[(filtered_df['MarketCap'] >= st.session_state['marketcap_range'][0]) & (filtered_df['MarketCap'] <= st.session_state['marketcap_range'][1])]
+    if st.session_state['float_range']:    
+        filtered_df = filtered_df[(filtered_df['Float'] >= st.session_state['float_range'][0]) & (filtered_df['Float'] <= st.session_state['float_range'][1])]
+    if st.session_state['marketcap_range']:    
+        filtered_df = filtered_df[(filtered_df['MarketCap'] >= st.session_state['marketcap_range'][0]) & (filtered_df['MarketCap'] <= st.session_state['marketcap_range'][1])]
 
     unique_tickers = sorted(set(filtered_df['Ticker'].astype(str)))
     unique_sector = sorted(set(filtered_df['Sector'].astype(str)))
