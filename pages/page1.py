@@ -44,13 +44,13 @@ if st.session_state.get('logged_in', False):
             st.rerun()
     if 'Sector' in df.columns:
         with col2:
-            selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector])
+            selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector'])
         if selected_sector != st.session_state['selected_sector']:
             st.session_state['selected_sector'] = selected_sector
             st.rerun()
     if 'Industry' in df.columns:
         with col3:
-            selected_ind = st.multiselect('Select Industry:', options=selected_ind, default=st.session_state['selected_ind])
+            selected_ind = st.multiselect('Select Industry:', options=selected_ind, default=st.session_state['selected_ind'])
         if selected_ind != st.session_state['selected_ind']:
             st.session_state['selected_ind'] = selected_ind
             st.rerun()
