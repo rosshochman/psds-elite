@@ -39,21 +39,21 @@ if st.session_state.get('logged_in', False):
     if 'Ticker' in df.columns:
         with col1:
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
-        if selected_tickers != st.session_state['selected_tickers']:
-            st.session_state['selected_tickers'] = selected_tickers
-            st.rerun()
+            if selected_tickers != st.session_state['selected_tickers']:
+                st.session_state['selected_tickers'] = selected_tickers
+                st.rerun()
     if 'Sector' in df.columns:
         with col2:
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector'])
-        if selected_sector != st.session_state['selected_sector']:
-            st.session_state['selected_sector'] = selected_sector
-            st.rerun()
+            if selected_sector != st.session_state['selected_sector']:
+                st.session_state['selected_sector'] = selected_sector
+                st.rerun()
     if 'Industry' in df.columns:
         with col3:
             selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=st.session_state['selected_ind'])
-        if selected_ind != st.session_state['selected_ind']:
-            st.session_state['selected_ind'] = selected_ind
-            st.rerun()
+            if selected_ind != st.session_state['selected_ind']:
+                st.session_state['selected_ind'] = selected_ind
+                st.rerun()
     df1 = st.empty()
     df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
