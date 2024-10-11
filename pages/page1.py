@@ -55,7 +55,7 @@ if st.session_state.get('logged_in', False):
                 st.session_state['selected_ind'] = selected_ind
                 st.rerun()
     df1 = st.empty()
-    df1.dataframe(df, column_config={"Website": st.column_config.LinkColumn("Website"),
+    df1.dataframe(filtered_df, column_config={"Website": st.column_config.LinkColumn("Website"),
                                      "Description":st.column_config.Column(width="medium"),
                                      "Name":st.column_config.Column(width="medium"),
                                     "Sector":st.column_config.Column(width="medium"),
