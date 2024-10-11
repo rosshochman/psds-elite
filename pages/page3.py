@@ -36,10 +36,14 @@ if st.session_state.get('logged_in', False):
     if st.session_state['selected_owners']:
         filtered_df = filtered_df[filtered_df['All Owners'].apply(lambda x: any(term.lower() in x.lower() for term in st.session_state['selected_owners']))]
     
-    # Get unique options based on the filtered DataFrame
-    unique_tickers = sorted(set(filtered_df['Ticker']))
-    unique_form = sorted(set(filtered_df['Form Type']))
-    unique_owners = sorted(set(owner.strip() for owners_list in filtered_df['All Owners'].str.split('|') for owner in owners_list if owner.strip()))
+    # Exclude NaN values using dropna() for Ticker and Form Type
+    unique_tickers = sorted(set(filtered_df['Ticker'].dropna()))
+    unique_form = sorted(set(filtered_df['Form Type'].dropna()))
+    
+    # For 'All Owners', ensure that NaN values are handled before splitting the strings
+    unique_owners = sorted(set(owner.strip() 
+        for owners_list in filtered_df['All Owners'].dropna().str.split('|') 
+        for owner in owners_list if owner.strip()))
     
     col1, col2, col3 = st.columns(3)
     
