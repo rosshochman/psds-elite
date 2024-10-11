@@ -78,7 +78,7 @@ if st.session_state.get('logged_in', False):
             if selected_country != st.session_state['selected_country']:
                 st.session_state['selected_country'] = selected_country
                 rerun_flag = "yes"
-            if re_run_flag = "yes":
+            if re_run_flag == "yes":
                 st.rerun()
 
 
