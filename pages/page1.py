@@ -73,7 +73,7 @@ if st.session_state.get('logged_in', False):
     if 'Float' in df.columns:
         with col4:
             float_range = st.slider('Select Float Range', min_value=float(df['Float'].min()), max_value=float(df['Float'].max()), 
-                                    value=st.session_state['float_range'])
+                                    value=st.session_state['float_range'],format="%d")
             if float_range != st.session_state['float_range']:
                 st.session_state['float_range'] = float_range
                 st.rerun()
@@ -83,7 +83,7 @@ if st.session_state.get('logged_in', False):
             marketcap_range = st.slider('Select MarketCap Range', 
                                         min_value=st.session_state['marketcap_range'][0], 
                                         max_value=st.session_state['marketcap_range'][1], 
-                                        value=st.session_state['marketcap_range'])
+                                        value=st.session_state['marketcap_range'],format="%d")
             if marketcap_range != st.session_state['marketcap_range']:
                 st.session_state['marketcap_range'] = marketcap_range
                 st.rerun()
