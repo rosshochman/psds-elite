@@ -30,7 +30,7 @@ if st.session_state.get('logged_in', False):
 
     #start here
 
-    unique_tickers = sorted(set(filtered_df['Ticker']))
+    unique_tickers = sorted(set(filtered_df['Ticker'].astype(str))
     unique_sector = sorted(set(filtered_df['Sector']))
     unique_ind = sorted(set(filtered_df['Industry']))
     
