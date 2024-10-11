@@ -47,16 +47,19 @@ if st.session_state.get('logged_in', False):
     with col1:
         selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
         st.session_state['selected_tickers'] = selected_tickers
+        st.rerun()
     
     # Form Type multiselect
     with col2:
         selected_form = st.multiselect('Select Form Type:', options=unique_form, default=st.session_state['selected_form'])
         st.session_state['selected_form'] = selected_form
+        st.rerun()
     
     # Owners multiselect
     with col3:
         selected_owners = st.multiselect('Select Owners:', options=unique_owners, default=st.session_state['selected_owners'])
         st.session_state['selected_owners'] = selected_owners
+        st.rerun()
     
     # Display the filtered DataFrame
     df1 = st.empty()
