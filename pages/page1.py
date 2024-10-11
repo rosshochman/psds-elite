@@ -75,9 +75,10 @@ if st.session_state.get('logged_in', False):
     if 'State/Country' in df.columns:
         with col5:
             selected_country = st.multiselect('Select State/Country:', options=unique_country, default=st.session_state['selected_country'])
+            re_run_flag = "no"
             if selected_country != st.session_state['selected_country']:
                 st.session_state['selected_country'] = selected_country
-                rerun_flag = "yes"
+                re_run_flag = "yes"
             if re_run_flag == "yes":
                 st.rerun()
 
