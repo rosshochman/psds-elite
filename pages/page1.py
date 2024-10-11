@@ -21,16 +21,6 @@ if st.session_state.get('logged_in', False):
         st.session_state['selected_sector'] = []
     if 'selected_ind' not in st.session_state:
         st.session_state['selected_ind'] = []
-    if 'float_range' not in st.session_state:
-        st.session_state['float_range'] = (df['Float'].min(), df['Float'].max())
-    if 'marketcap_range' not in st.session_state:
-        marketcap_min = df['MarketCap'].min()
-        marketcap_max = df['MarketCap'].max()
-        if pd.isna(marketcap_min):
-            marketcap_min = 0
-        if pd.isna(marketcap_max):
-            marketcap_max = 1 
-        st.session_state['marketcap_range'] = (marketcap_min, marketcap_max)
 
     filtered_df = df.copy()
 
@@ -40,11 +30,17 @@ if st.session_state.get('logged_in', False):
         filtered_df = filtered_df[filtered_df['Sector'].isin(st.session_state['selected_sector'])]
     if st.session_state['selected_ind']:
         filtered_df = filtered_df[filtered_df['Industry'].isin(st.session_state['selected_ind'])]
+    if st.session_state['selected_inc']:
+        filtered_df = filtered_df[filtered_df['State Incorporation'].isin(st.session_state['selected_inc'])]
+    if st.session_state['selected_country']:
+        filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
 
 
     unique_tickers = sorted(set(filtered_df['Ticker'].astype(str)))
     unique_sector = sorted(set(filtered_df['Sector'].astype(str)))
     unique_ind = sorted(set(filtered_df['Industry'].astype(str)))
+    unique_inc = sorted(set(filtered_df['State Incorporation'].astype(str)))
+    unique_country = sorted(set(filtered_df['State/Country'].astype(str)))
     
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2, col3, col4, col5= st.columns(5)
@@ -65,6 +61,18 @@ if st.session_state.get('logged_in', False):
             selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=st.session_state['selected_ind'])
             if selected_ind != st.session_state['selected_ind']:
                 st.session_state['selected_ind'] = selected_ind
+                st.rerun()
+    if 'State Incorporation' in df.columns:
+        with col4:
+            unique_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=st.session_state['selected_inc'])
+            if selected_inc != st.session_state['selected_inc']:
+                st.session_state['selected_inc'] = selected_inc
+                st.rerun()
+    if 'State/Country' in df.columns:
+        with col5:
+            selected_country = st.multiselect('Select State/Country:', options=unique_country, default=st.session_state['selected_country'])
+            if selected_country != st.session_state['selected_country']:
+                st.session_state['selected_country'] = selected_country
                 st.rerun()
 
 
