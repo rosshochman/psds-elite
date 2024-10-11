@@ -40,11 +40,11 @@ if st.session_state.get('logged_in', False):
         filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
 
 
-    unique_tickers = sorted(set(filtered_df['Ticker'].astype(str)))
-    unique_sector = sorted(set(filtered_df['Sector'].astype(str)))
-    unique_ind = sorted(set(filtered_df['Industry'].astype(str)))
-    unique_inc = sorted(set(filtered_df['State Incorporation'].astype(str)))
-    unique_country = sorted(set(filtered_df['State/Country'].astype(str)))
+    unique_tickers = sorted(set(filtered_df['Ticker'].dropna().astype(str)))
+    unique_sector = sorted(set(filtered_df['Sector'].dropna().astype(str)))
+    unique_ind = sorted(set(filtered_df['Industry'].dropna().astype(str)))
+    unique_inc = sorted(set(filtered_df['State Incorporation'].dropna().astype(str)))
+    unique_country = sorted(set(filtered_df['State/Country'].dropna().astype(str)))
     
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2, col3, col4, col5= st.columns(5)
