@@ -25,7 +25,7 @@ def make_sidebar():
             st.session_state['selected_owners'] = []
         # Use the filtered DataFrame to update the multiselect options dynamically
         filtered_df = df.copy()
-
+    
         # Apply filters based on session state
         if st.session_state['selected_tickers']:
             filtered_df = filtered_df[filtered_df['Ticker'].isin(st.session_state['selected_tickers'])]
@@ -63,6 +63,6 @@ def make_sidebar():
                                                   "Owners": st.column_config.Column(width="medium"),
                                                   "Filing Link": st.column_config.LinkColumn("Filing Link", width="small")},
                                                   use_container_width=True, hide_index=True, height=750)
-
+    
     if not st.session_state.get('logged_in', False):
         st.write("Forbidden")
