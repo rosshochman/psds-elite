@@ -18,10 +18,6 @@ if st.session_state.get('logged_in', False):
         st.session_state['selected_sector'] = []
     if 'selected_industry' not in st.session_state:
         st.session_state['selected_industry'] = []
-    if 'search_text' not in st.session_state:
-        st.session_state['search_text'] = ""
-    if 'session_search_string' not in st.session_state:
-        st.session_state['session_search_string'] = "No search in progress."
 
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     
@@ -58,32 +54,6 @@ if st.session_state.get('logged_in', False):
                 st.session_state['selected_industry'] = selected_industry
                 st.rerun()
 
-    # Description search
-    if 'Description' in df.columns:
-        df['Description'] = df['Description'].astype(str)
-        with col4:
-            search_text = st.text_input("Enter text to search in the Description column:", value=st.session_state['search_text'])
-            if search_text != st.session_state['search_text']:
-                st.session_state['search_text'] = search_text
-
-            sub_col1, sub_col2 = st.columns(2)
-            with sub_col1:
-                if st.button("Search", use_container_width=True):
-                    if st.session_state['search_text']:
-                        df = df[df['Description'].str.contains(st.session_state['search_text'], case=False, na=False)]
-                        st.session_state['session_search_string'] = "Currently searching for " + st.session_state['search_text']
-                        st.rerun()
-                    else:
-                        st.warning("Please enter a search term")
-            
-            with sub_col2:
-                if st.button("Reset", use_container_width=True):
-                    st.session_state['search_text'] = ""
-                    st.session_state['session_search_string'] = "No search in progress."
-                    st.rerun()
-            
-            st.markdown(st.session_state['session_search_string'])
-    
     # Apply filters from session state
     if st.session_state['selected_tickers']:
         df = df[df['Ticker'].isin(st.session_state['selected_tickers'])]
