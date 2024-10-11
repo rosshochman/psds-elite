@@ -80,7 +80,9 @@ if st.session_state.get('logged_in', False):
 
     if 'MarketCap' in df.columns:
         with col5:
-            marketcap_range = st.slider('Select MarketCap Range', min_value=float(df['MarketCap'].min()), max_value=float(df['MarketCap'].max()), 
+            marketcap_range = st.slider('Select MarketCap Range', 
+                                        min_value=st.session_state['marketcap_range'][0], 
+                                        max_value=st.session_state['marketcap_range'][1], 
                                         value=st.session_state['marketcap_range'])
             if marketcap_range != st.session_state['marketcap_range']:
                 st.session_state['marketcap_range'] = marketcap_range
