@@ -59,9 +59,12 @@ if st.session_state.get('logged_in', False):
     if 'Sector' in df.columns:
         with col2:
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector'])
-            if selected_sector != st.session_state['selected_sector']:
+            if st.button('Apply Sectors Filter'):
                 st.session_state['selected_sector'] = selected_sector
                 st.rerun()
+            #if selected_sector != st.session_state['selected_sector']:
+            #    st.session_state['selected_sector'] = selected_sector
+            #    st.rerun()
     if 'Industry' in df.columns:
         with col3:
             selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=st.session_state['selected_ind'])
