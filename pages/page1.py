@@ -35,15 +35,15 @@ if st.session_state.get('logged_in', False):
     if st.session_state['selected_ind']:
         filtered_df = filtered_df[filtered_df['Industry'].isin(st.session_state['selected_ind'])]
     if st.session_state['selected_inc']:
-        filtered_df = filtered_df[filtered_df['State Incorporation'].isin(st.session_state['selected_inc'])]
+        filtered_df = filtered_df[filtered_df['Country Incorporation'].isin(st.session_state['selected_inc'])]
     if st.session_state['selected_country']:
-        filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
+        filtered_df = filtered_df[filtered_df['Country'].isin(st.session_state['selected_country'])]
 
     unique_tickers = sorted(set(filtered_df['Ticker'].dropna().astype(str)))
     unique_sector = sorted(set(filtered_df['Sector'].dropna().astype(str)))
     unique_ind = sorted(set(filtered_df['Industry'].dropna().astype(str)))
-    unique_inc = sorted(set(filtered_df['State Incorporation'].dropna().astype(str)))
-    unique_country = sorted(set(filtered_df['State/Country'].dropna().astype(str)))
+    unique_inc = sorted(set(filtered_df['Country Incorporation'].dropna().astype(str)))
+    unique_country = sorted(set(filtered_df['Country'].dropna().astype(str)))
 
     valid_selected_tickers = [ticker for ticker in st.session_state['selected_tickers'] if ticker in unique_tickers]
     valid_selected_sector = [sector for sector in st.session_state['selected_sector'] if sector in unique_sector]
@@ -91,19 +91,19 @@ if st.session_state.get('logged_in', False):
                     st.rerun()
     if 'State Incorporation' in df.columns:
         with col4:
-            selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=valid_selected_inc)
+            selected_inc = st.multiselect('Select Country Incorporation:', options=unique_inc, default=valid_selected_inc)
             col4_1, col4_2= st.columns(2)
             with col4_1:
-                if st.button('Apply SI', use_container_width=True):
+                if st.button('Apply CI', use_container_width=True):
                     st.session_state['selected_inc'] = selected_inc
                     st.rerun()
             with col4_2:
-                if st.button('Reset SI', type='primary', use_container_width=True):
+                if st.button('Reset CI', type='primary', use_container_width=True):
                     st.session_state['selected_inc'] = []
                     st.rerun()
     if 'State/Country' in df.columns:
         with col5:
-            selected_country = st.multiselect('Select State/Country:', options=unique_country, default=valid_selected_country)
+            selected_country = st.multiselect('Select Country:', options=unique_country, default=valid_selected_country)
             col5_1, col5_2= st.columns(2)
             with col5_1:
                 if st.button('Apply Country', use_container_width=True):
