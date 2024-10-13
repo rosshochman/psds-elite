@@ -89,7 +89,7 @@ if st.session_state.get('logged_in', False):
                 if st.button('Reset Industry', type='primary', use_container_width=True):
                     st.session_state['selected_ind'] = []
                     st.rerun()
-    if 'State Incorporation' in df.columns:
+    if 'Country Incorporation' in df.columns:
         with col4:
             selected_inc = st.multiselect('Select Country Incorporation:', options=unique_inc, default=valid_selected_inc)
             col4_1, col4_2= st.columns(2)
@@ -101,7 +101,7 @@ if st.session_state.get('logged_in', False):
                 if st.button('Reset CI', type='primary', use_container_width=True):
                     st.session_state['selected_inc'] = []
                     st.rerun()
-    if 'State/Country' in df.columns:
+    if 'Country' in df.columns:
         with col5:
             selected_country = st.multiselect('Select Country:', options=unique_country, default=valid_selected_country)
             col5_1, col5_2= st.columns(2)
