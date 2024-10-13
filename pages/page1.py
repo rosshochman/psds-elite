@@ -62,7 +62,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_tickers'] = selected_tickers
                     st.rerun()
             with col1_2:
-                if st.button('Reset', type='primary'):
+                if st.button('Reset Ticker', type='primary'):
                     st.session_state['selected_tickers'] = []
                     st.rerun()
     if 'Sector' in df.columns:
@@ -74,7 +74,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_sector'] = selected_sector
                     st.rerun()
             with col2_2:
-                if st.button('Reset', type='primary'):
+                if st.button('Reset Sec', type='primary'):
                     st.session_state['selected_sector'] = []
                     st.rerun()
     if 'Industry' in df.columns:
@@ -86,7 +86,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_ind'] = selected_ind
                     st.rerun()
             with col3_2:
-                if st.button('Reset', type='primary'):
+                if st.button('Reset Ind', type='primary'):
                     st.session_state['selected_ind'] = []
                     st.rerun()
     if 'State Incorporation' in df.columns:
@@ -98,7 +98,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_inc'] = selected_inc
                     st.rerun()
             with col4_2:
-                if st.button('Reset', type='primary'):
+                if st.button('Reset SI', type='primary'):
                     st.session_state['selected_inc'] = []
                     st.rerun()
     if 'State/Country' in df.columns:
@@ -110,7 +110,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_country'] = selected_country
                     st.rerun()
             with col5_2:
-                if st.button('Reset', type='primary'):
+                if st.button('Reset Country', type='primary'):
                     st.session_state['selected_country'] = []
                     st.rerun()
         
