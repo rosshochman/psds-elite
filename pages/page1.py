@@ -56,15 +56,15 @@ if st.session_state.get('logged_in', False):
     if 'Ticker' in df.columns:
         with col1:
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=valid_selected_tickers)
-            if st.button('Apply Tickers Filter'):
-                st.session_state['selected_tickers'] = selected_tickers
-                st.rerun()
-            if st.button('Reset Tickers Filter'):
-                st.session_state['selected_tickers'] = []
-                st.rerun()
-            #if selected_tickers != st.session_state['selected_tickers']:
-            #    st.session_state['selected_tickers'] = selected_tickers
-            #    st.rerun()
+            tick_col1, tick_col2 st.columns(2)
+            with tick_col1:
+                if st.button('Apply Tickers Filter'):
+                    st.session_state['selected_tickers'] = selected_tickers
+                    st.rerun()
+            with tick_col2:
+                if st.button('Reset Tickers Filter'):
+                    st.session_state['selected_tickers'] = []
+                    st.rerun()
     if 'Sector' in df.columns:
         with col2:
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=valid_selected_sector)
