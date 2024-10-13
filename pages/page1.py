@@ -62,7 +62,7 @@ if st.session_state.get('logged_in', False):
     if 'Sector' in df.columns:
         with col2:
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=valid_selected_sector)
-            if st.button('Apply Sectors Filter'):
+            if st.button('Apply Sector Filter'):
                 st.session_state['selected_sector'] = selected_sector
                 st.rerun()
             #if selected_sector != st.session_state['selected_sector']:
@@ -71,19 +71,19 @@ if st.session_state.get('logged_in', False):
     if 'Industry' in df.columns:
         with col3:
             selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=valid_selected_ind)
-            if selected_ind != st.session_state['selected_ind']:
+            if st.button('Apply Industry Filter'):
                 st.session_state['selected_ind'] = selected_ind
                 st.rerun()
     if 'State Incorporation' in df.columns:
         with col4:
             selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=valid_selected_inc)
-            if selected_inc != st.session_state['selected_inc']:
+            if st.button('Apply State Incorporation Filter'):
                 st.session_state['selected_inc'] = selected_inc
                 st.rerun()
     if 'State/Country' in df.columns:
         with col5:
             selected_country = st.multiselect('Select State/Country:', options=unique_country, default=valid_selected_country)
-            if selected_country != st.session_state['selected_country']:
+            if st.button('Apply Country Filter'):
                 st.session_state['selected_country'] = selected_country
                 st.rerun()
         
