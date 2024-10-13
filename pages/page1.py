@@ -7,11 +7,7 @@ st.set_page_config(layout="wide")
 conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
 # Check if "NA" is present in the 'Ticker' column before replacing it
-if 'NA' in df['Ticker'].values:
-    df['Ticker'] = df['Ticker'].replace('NA', 'NA', regex=False)
-# Check if "NA" is present in the 'Ticker' column before replacing it
-if 'NAN' in df['Ticker'].values:
-    df['Ticker'] = df['Ticker'].replace('NAN', 'NAN', regex=False)
+df['Ticker'] = df['Ticker'].replace('NA', 'NA', regex=False)
 
 #df['MarketCap'] = df['MarketCap'].fillna(0)
 #df['Float'] = df['MarketCap'].fillna(0)
