@@ -58,7 +58,7 @@ if st.session_state.get('logged_in', False):
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=valid_selected_tickers)
             col1_1, col1_2= st.columns(2)
             with col1_1:
-                if st.button('Apply Ticker Filter'):
+                if st.button('Apply Ticker'):
                     st.session_state['selected_tickers'] = selected_tickers
                     st.rerun()
             with col1_2:
@@ -70,11 +70,11 @@ if st.session_state.get('logged_in', False):
             selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=valid_selected_sector)
             col2_1, col2_2= st.columns(2)
             with col2_1:
-                if st.button('Apply Sector Filter'):
+                if st.button('Apply Sector'):
                     st.session_state['selected_sector'] = selected_sector
                     st.rerun()
             with col2_2:
-                if st.button('Reset Sec', type='primary'):
+                if st.button('Reset Sector', type='primary'):
                     st.session_state['selected_sector'] = []
                     st.rerun()
     if 'Industry' in df.columns:
@@ -82,11 +82,11 @@ if st.session_state.get('logged_in', False):
             selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=valid_selected_ind)
             col3_1, col3_2= st.columns(2)
             with col3_1:
-                if st.button('Apply Industry Filter'):
+                if st.button('Apply Industry'):
                     st.session_state['selected_ind'] = selected_ind
                     st.rerun()
             with col3_2:
-                if st.button('Reset Ind', type='primary'):
+                if st.button('Reset Industry', type='primary'):
                     st.session_state['selected_ind'] = []
                     st.rerun()
     if 'State Incorporation' in df.columns:
@@ -94,7 +94,7 @@ if st.session_state.get('logged_in', False):
             selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=valid_selected_inc)
             col4_1, col4_2= st.columns(2)
             with col4_1:
-                if st.button('Apply State Incorporation Filter'):
+                if st.button('Apply SI'):
                     st.session_state['selected_inc'] = selected_inc
                     st.rerun()
             with col4_2:
@@ -106,7 +106,7 @@ if st.session_state.get('logged_in', False):
             selected_country = st.multiselect('Select State/Country:', options=unique_country, default=valid_selected_country)
             col5_1, col5_2= st.columns(2)
             with col5_1:
-                if st.button('Apply Country Filter'):
+                if st.button('Apply Country'):
                     st.session_state['selected_country'] = selected_country
                     st.rerun()
             with col5_2:
