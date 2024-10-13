@@ -44,12 +44,18 @@ if st.session_state.get('logged_in', False):
     unique_ind = sorted(set(filtered_df['Industry'].dropna().astype(str)))
     unique_inc = sorted(set(filtered_df['State Incorporation'].dropna().astype(str)))
     unique_country = sorted(set(filtered_df['State/Country'].dropna().astype(str)))
+
+    valid_selected_tickers = [ticker for ticker in st.session_state['selected_tickers'] if ticker in unique_tickers]
+    valid_selected_sector = [sector for sector in st.session_state['selected_sector'] if sector in unique_sector]
+    valid_selected_ind = [ind for ind in st.session_state['selected_ind'] if ind in unique_ind]
+    valid_selected_inc = [inc for inc in st.session_state['selected_inc'] if inc in unique_inc]
+    valid_selected_country = [country for country in st.session_state['selected_country'] if country in unique_country]
     
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
     col1, col2, col3, col4, col5= st.columns(5)
     if 'Ticker' in df.columns:
         with col1:
-            selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
+            selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=valid_selected_tickers)
             if st.button('Apply Tickers Filter'):
                 st.session_state['selected_tickers'] = selected_tickers
                 st.rerun()
@@ -58,7 +64,7 @@ if st.session_state.get('logged_in', False):
             #    st.rerun()
     if 'Sector' in df.columns:
         with col2:
-            selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=st.session_state['selected_sector'])
+            selected_sector = st.multiselect('Select Sector:', options=unique_sector, default=valid_selected_sector)
             if st.button('Apply Sectors Filter'):
                 st.session_state['selected_sector'] = selected_sector
                 st.rerun()
@@ -67,19 +73,19 @@ if st.session_state.get('logged_in', False):
             #    st.rerun()
     if 'Industry' in df.columns:
         with col3:
-            selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=st.session_state['selected_ind'])
+            selected_ind = st.multiselect('Select Industry:', options=unique_ind, default=valid_selected_ind)
             if selected_ind != st.session_state['selected_ind']:
                 st.session_state['selected_ind'] = selected_ind
                 st.rerun()
     if 'State Incorporation' in df.columns:
         with col4:
-            selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=st.session_state['selected_inc'])
+            selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=valid_selected_inc)
             if selected_inc != st.session_state['selected_inc']:
                 st.session_state['selected_inc'] = selected_inc
                 st.rerun()
     if 'State/Country' in df.columns:
         with col5:
-            selected_country = st.multiselect('Select State/Country:', options=unique_country, default=st.session_state['selected_country'])
+            selected_country = st.multiselect('Select State/Country:', options=unique_country, default=valid_selected_country)
             if selected_country != st.session_state['selected_country']:
                 st.session_state['selected_country'] = selected_country
                 st.rerun()
