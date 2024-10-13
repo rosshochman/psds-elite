@@ -62,7 +62,7 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_tickers'] = selected_tickers
                     st.rerun()
             with tick_col2:
-                if st.button('Reset Tickers Filter'):
+                if st.button('Reset Tickers Filter', type="primary"):
                     st.session_state['selected_tickers'] = []
                     st.rerun()
     if 'Sector' in df.columns:
