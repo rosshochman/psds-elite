@@ -8,8 +8,8 @@ conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
 #df['MarketCap'] = df['MarketCap'].fillna(0)
 #df['Float'] = df['MarketCap'].fillna(0)
-df['Float'] = pd.to_numeric(df['Float'], errors='coerce') 
-df['MarketCap'] = pd.to_numeric(df['MarketCap'], errors='coerce')
+#df['Float'] = pd.to_numeric(df['Float'], errors='coerce') 
+#df['MarketCap'] = pd.to_numeric(df['MarketCap'], errors='coerce')
 #if 'filtered_df' not in st.session_state:
     #st.session_state['filtered_df'] = df.copy()
 
