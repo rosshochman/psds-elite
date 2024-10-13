@@ -46,7 +46,18 @@ if st.session_state.get('logged_in', False):
         filtered_df = filtered_df[filtered_df['State Incorporation'].isin(st.session_state['selected_inc'])]
     if st.session_state['selected_country']:
         filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
-        
+
+
+    # Filter based on Float range
+    if st.session_state['float_min'] is not None and st.session_state['float_max'] is not None:
+        filtered_df = filtered_df[(filtered_df['Float'] >= st.session_state['float_min']) & 
+                                  (filtered_df['Float'] <= st.session_state['float_max'])]
+
+    # Filter based on MarketCap range
+    if st.session_state['marketcap_min'] is not None and st.session_state['marketcap_max'] is not None:
+        filtered_df = filtered_df[(filtered_df['MarketCap'] >= st.session_state['marketcap_min']) & 
+                                  (filtered_df['MarketCap'] <= st.session_state['marketcap_max'])]
+
     # Now the min and max for Float and MarketCap should be based on the filtered DataFrame
     float_min = float(filtered_df['Float'].min()) if not filtered_df.empty else float(df['Float'].min())
     float_max = float(filtered_df['Float'].max()) if not filtered_df.empty else float(df['Float'].max())
