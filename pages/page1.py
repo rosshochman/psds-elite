@@ -56,7 +56,7 @@ if st.session_state.get('logged_in', False):
     if 'Ticker' in df.columns:
         with col1:
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=valid_selected_tickers)
-            tick_col1, tick_col2 st.columns(2)
+            tick_col1, tick_col2= st.columns(2)
             with tick_col1:
                 if st.button('Apply Tickers Filter'):
                     st.session_state['selected_tickers'] = selected_tickers
