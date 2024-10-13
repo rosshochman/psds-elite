@@ -92,7 +92,7 @@ if st.session_state.get('logged_in', False):
     if 'State Incorporation' in df.columns:
         with col4:
             selected_inc = st.multiselect('Select State Incorporation:', options=unique_inc, default=valid_selected_inc)
-            col4_1, col2_2= st.columns(2)
+            col4_1, col4_2= st.columns(2)
             with col4_1:
                 if st.button('Apply State Incorporation Filter'):
                     st.session_state['selected_inc'] = selected_inc
