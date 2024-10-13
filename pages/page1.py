@@ -48,10 +48,11 @@ if st.session_state.get('logged_in', False):
         filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
         
     # Now the min and max for Float and MarketCap should be based on the filtered DataFrame
-    float_min = filtered_df['Float'].min() if not filtered_df.empty else df['Float'].min()
-    float_max = filtered_df['Float'].max() if not filtered_df.empty else df['Float'].max()
-    marketcap_min = filtered_df['MarketCap'].min() if not filtered_df.empty else df['MarketCap'].min()
-    marketcap_max = filtered_df['MarketCap'].max() if not filtered_df.empty else df['MarketCap'].max()
+    float_min = float(filtered_df['Float'].min()) if not filtered_df.empty else float(df['Float'].min())
+    float_max = float(filtered_df['Float'].max()) if not filtered_df.empty else float(df['Float'].max())
+    marketcap_min = float(filtered_df['MarketCap'].min()) if not filtered_df.empty else float(df['MarketCap'].min())
+    marketcap_max = float(filtered_df['MarketCap'].max()) if not filtered_df.empty else float(df['MarketCap'].max())
+
 
 
 
@@ -130,8 +131,8 @@ if st.session_state.get('logged_in', False):
                     st.session_state['selected_country'] = []
                     st.rerun()
     with col6:
-        float_min_input = st.number_input('Min Float', value=st.session_state['float_min'], min_value=float_min)
-        float_max_input = st.number_input('Max Float', value=st.session_state['float_max'], max_value=float_max)
+        float_min_input = st.number_input('Min Float', value=float(st.session_state['float_min'], min_value=float_min))
+        float_max_input = st.number_input('Max Float', value=float(st.session_state['float_max'], max_value=float_max))
         col6_1, col6_2 = st.columns(2)
         with col6_1:
             if st.button('Apply Float', use_container_width=True):
@@ -146,8 +147,8 @@ if st.session_state.get('logged_in', False):
 
     # Number inputs for MarketCap (min and max based on filtered_df)
     with col7:
-        marketcap_min_input = st.number_input('Min MarketCap', value=st.session_state['marketcap_min'], min_value=marketcap_min)
-        marketcap_max_input = st.number_input('Max MarketCap', value=st.session_state['marketcap_max'], max_value=marketcap_max)
+        marketcap_min_input = st.number_input('Min MarketCap', value=float(st.session_state['marketcap_min'], min_value=marketcap_min))
+        marketcap_max_input = st.number_input('Max MarketCap', value=float(st.session_state['marketcap_max'], max_value=marketcap_max))
         col7_1, col7_2 = st.columns(2)
         with col7_1:
             if st.button('Apply MarketCap', use_container_width=True):
