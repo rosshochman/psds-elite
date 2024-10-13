@@ -59,6 +59,9 @@ if st.session_state.get('logged_in', False):
             if st.button('Apply Tickers Filter'):
                 st.session_state['selected_tickers'] = selected_tickers
                 st.rerun()
+            if st.button('Reset Tickers Filter'):
+                st.session_state['selected_tickers'] = []
+                st.rerun()
             #if selected_tickers != st.session_state['selected_tickers']:
             #    st.session_state['selected_tickers'] = selected_tickers
             #    st.rerun()
