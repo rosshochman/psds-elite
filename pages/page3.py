@@ -67,7 +67,7 @@ if st.session_state.get('logged_in', False):
     
     # Form Type multiselect
     with col2:
-        selected_form = st.multiselect('Select Form Type:', options=unique_form, valid_selected_form)
+        selected_form = st.multiselect('Select Form Type:', options=unique_form, default=valid_selected_form)
         col1_1, col1_2= st.columns(2)
         with col1_1:
             if st.button('Apply Form', use_container_width=True):
@@ -79,7 +79,7 @@ if st.session_state.get('logged_in', False):
                 st.rerun()    
     # Owners multiselect
     with col3:
-        selected_owners = st.multiselect('Select Owners:', options=unique_owners, valid_selected_owners)
+        selected_owners = st.multiselect('Select Owners:', options=unique_owners, default=valid_selected_owners)
         col1_1, col1_2= st.columns(2)
         with col1_1:
             if st.button('Apply Owners', use_container_width=True):
