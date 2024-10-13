@@ -45,28 +45,50 @@ if st.session_state.get('logged_in', False):
         for owners_list in filtered_df['All Owners'].dropna().str.split('|') 
         for owner in owners_list if owner.strip()))
     
+    valid_selected_tickers = [ticker for ticker in st.session_state['selected_tickers'] if ticker in unique_tickers]
+    valid_selected_form = [form for form in st.session_state['selected_form'] if form in unique_form]
+    valid_selected_owners = [owners for owners in st.session_state['selected_owners'] if owners in unique_owners]
+
+    
     col1, col2, col3 = st.columns(3)
     
     # Ticker multiselect
     with col1:
-        selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=st.session_state['selected_tickers'])
-        if selected_tickers != st.session_state['selected_tickers']:
-            st.session_state['selected_tickers'] = selected_tickers
-            st.rerun()
+        selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=valid_selected_tickers)
+        col1_1, col1_2= st.columns(2)
+        with col1_1:
+            if st.button('Apply Ticker', use_container_width=True):
+                st.session_state['selected_tickers'] = selected_tickers
+                st.rerun()
+        with col1_2:
+            if st.button('Reset Ticker', type='primary', use_container_width=True):
+                st.session_state['selected_tickers'] = []
+                st.rerun()
     
     # Form Type multiselect
     with col2:
-        selected_form = st.multiselect('Select Form Type:', options=unique_form, default=st.session_state['selected_form'])
-        if selected_form != st.session_state['selected_form']:
-            st.session_state['selected_form'] = selected_form
-            st.rerun()
-    
+        selected_form = st.multiselect('Select Form Type:', options=unique_form, valid_selected_form)
+        col1_1, col1_2= st.columns(2)
+        with col1_1:
+            if st.button('Apply Form', use_container_width=True):
+                st.session_state['selected_form'] = selected_form
+                st.rerun()
+        with col1_2:
+            if st.button('Reset Form', type='primary', use_container_width=True):
+                st.session_state['selected_form'] = []
+                st.rerun()    
     # Owners multiselect
     with col3:
-        selected_owners = st.multiselect('Select Owners:', options=unique_owners, default=st.session_state['selected_owners'])
-        if selected_owners != st.session_state['selected_owners']:
-            st.session_state['selected_owners'] = selected_owners
-            st.rerun()
+        selected_owners = st.multiselect('Select Owners:', options=unique_owners, valid_selected_owners)
+        col1_1, col1_2= st.columns(2)
+        with col1_1:
+            if st.button('Apply Owners', use_container_width=True):
+                st.session_state['selected_owners'] = selected_owners
+                st.rerun()
+        with col1_2:
+            if st.button('Reset Owners', type='primary', use_container_width=True):
+                st.session_state['selected_owners'] = []
+                st.rerun()   
     
     # Display the filtered DataFrame
     df1 = st.empty()
