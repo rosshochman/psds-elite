@@ -6,8 +6,8 @@ import pandas as pd
 st.set_page_config(layout="wide")
 conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
-df['MarketCap'] = df['MarketCap'].fillna(0)
-df['Float'] = df['MarketCap'].fillna(0)
+#df['MarketCap'] = df['MarketCap'].fillna(0)
+#df['Float'] = df['MarketCap'].fillna(0)
 df['Float'] = pd.to_numeric(df['Float'], errors='coerce') 
 df['MarketCap'] = pd.to_numeric(df['MarketCap'], errors='coerce')
 #if 'filtered_df' not in st.session_state:
@@ -25,14 +25,6 @@ if st.session_state.get('logged_in', False):
         st.session_state['selected_inc'] = []
     if 'selected_country' not in st.session_state:
         st.session_state['selected_country'] = []
-    if 'float_min' not in st.session_state:
-        st.session_state['float_min'] = float(df['Float'].min())
-    if 'float_max' not in st.session_state:
-        st.session_state['float_max'] = float(df['Float'].max())
-    if 'marketcap_min' not in st.session_state:
-        st.session_state['marketcap_min'] = float(df['MarketCap'].min())
-    if 'marketcap_max' not in st.session_state:
-        st.session_state['marketcap_max'] = float(df['MarketCap'].max())
 
     filtered_df = df.copy()
 
@@ -47,26 +39,6 @@ if st.session_state.get('logged_in', False):
     if st.session_state['selected_country']:
         filtered_df = filtered_df[filtered_df['State/Country'].isin(st.session_state['selected_country'])]
 
-
-    # Filter based on Float range
-    if st.session_state['float_min'] is not None and st.session_state['float_max'] is not None:
-        filtered_df = filtered_df[(filtered_df['Float'] >= st.session_state['float_min']) & 
-                                  (filtered_df['Float'] <= st.session_state['float_max'])]
-
-    # Filter based on MarketCap range
-    if st.session_state['marketcap_min'] is not None and st.session_state['marketcap_max'] is not None:
-        filtered_df = filtered_df[(filtered_df['MarketCap'] >= st.session_state['marketcap_min']) & 
-                                  (filtered_df['MarketCap'] <= st.session_state['marketcap_max'])]
-
-    # Now the min and max for Float and MarketCap should be based on the filtered DataFrame
-    float_min = float(filtered_df['Float'].min()) if not filtered_df.empty else float(df['Float'].min())
-    float_max = float(filtered_df['Float'].max()) if not filtered_df.empty else float(df['Float'].max())
-    marketcap_min = float(filtered_df['MarketCap'].min()) if not filtered_df.empty else float(df['MarketCap'].min())
-    marketcap_max = float(filtered_df['MarketCap'].max()) if not filtered_df.empty else float(df['MarketCap'].max())
-
-
-
-
     unique_tickers = sorted(set(filtered_df['Ticker'].dropna().astype(str)))
     unique_sector = sorted(set(filtered_df['Sector'].dropna().astype(str)))
     unique_ind = sorted(set(filtered_df['Industry'].dropna().astype(str)))
@@ -80,7 +52,7 @@ if st.session_state.get('logged_in', False):
     valid_selected_country = [country for country in st.session_state['selected_country'] if country in unique_country]
     
     st.markdown("Data below is for all small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    col1, col2, col3, col4, col5, col6, col7 = st.columns(7)
+    col1, col2, col3, col4, col5 = st.columns(5)
     if 'Ticker' in df.columns:
         with col1:
             selected_tickers = st.multiselect('Select Tickers:', options=unique_tickers, default=valid_selected_tickers)
@@ -141,36 +113,6 @@ if st.session_state.get('logged_in', False):
                 if st.button('Reset Country', type='primary', use_container_width=True):
                     st.session_state['selected_country'] = []
                     st.rerun()
-    with col6:
-        float_min_input = st.number_input('Min Float', value=float(st.session_state['float_min']), min_value=float_min)
-        float_max_input = st.number_input('Max Float', value=float(st.session_state['float_max']), max_value=float_max)
-        col6_1, col6_2 = st.columns(2)
-        with col6_1:
-            if st.button('Apply Float', use_container_width=True):
-                st.session_state['float_min'] = float_min_input
-                st.session_state['float_max'] = float_max_input
-                st.rerun()
-        with col6_2:
-            if st.button('Reset Float', type='primary', use_container_width=True):
-                st.session_state['float_min'] = float(df['Float'].min())
-                st.session_state['float_max'] = float(df['Float'].max())
-                st.rerun()
-
-    # Number inputs for MarketCap (min and max based on filtered_df)
-    with col7:
-        marketcap_min_input = st.number_input('Min MarketCap', value=float(st.session_state['marketcap_min']), min_value=marketcap_min)
-        marketcap_max_input = st.number_input('Max MarketCap', value=float(st.session_state['marketcap_max']), max_value=marketcap_max)
-        col7_1, col7_2 = st.columns(2)
-        with col7_1:
-            if st.button('Apply MarketCap', use_container_width=True):
-                st.session_state['marketcap_min'] = marketcap_min_input
-                st.session_state['marketcap_max'] = marketcap_max_input
-                st.rerun()
-        with col7_2:
-            if st.button('Reset MarketCap', type='primary', use_container_width=True):
-                st.session_state['marketcap_min'] = float(df['MarketCap'].min())
-                st.session_state['marketcap_max'] = float(df['MarketCap'].max())
-                st.rerun()
 
 
     df1 = st.empty()
