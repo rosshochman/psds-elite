@@ -19,15 +19,15 @@ make_sidebar()
 
 if st.session_state.get('logged_in', False):
     st.markdown("Data below is for all 13D/G filings for small cap tickers. Please use the MultiSelect tools to filter for your search criteria.")
-    if 'selected_tickers' not in st.session_state:
+    if 'selected_tickers_2' not in st.session_state:
         st.session_state['selected_tickers_2'] = []
-    if 'selected_form' not in st.session_state:
+    if 'selected_form_2' not in st.session_state:
         st.session_state['selected_form_2'] = []
-    if 'selected_owners' not in st.session_state:
+    if 'selected_owners_2' not in st.session_state:
         st.session_state['selected_owners_2'] = []
-    if 'selected_filer' not in st.session_state:
+    if 'selected_filer_2' not in st.session_state:
         st.session_state['selected_filer_2'] = []
-    if 'selected_country' not in st.session_state:
+    if 'selected_country_2' not in st.session_state:
         st.session_state['selected_country_2'] = []
 
     # Use the filtered DataFrame to update the multiselect options dynamically
