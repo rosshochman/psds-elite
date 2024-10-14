@@ -5,7 +5,7 @@ make_sidebar()
 if st.session_state.get('logged_in', False):
     st.write(
         """
-Catalyst Tracker Coming Soon
+SEC Litigation & News Full Text Search Coming Soon
     
     """
     )
