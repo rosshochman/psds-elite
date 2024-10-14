@@ -22,7 +22,7 @@ def make_sidebar():
 
         if st.session_state.get('logged_in', False):
             st.page_link("pages/page1.py", label="Small Cap Screener", icon="🔒")
-            #st.page_link("pages/page2.py", label="Catalyst Tracker", icon="🔒")
+            st.page_link("pages/page2.py", label="Catalyst Tracker", icon="🔒")
             st.page_link("pages/page3.py", label="13G/13D Tracker", icon="🔒")
             #st.page_link("pages/page4.py", label="IPO Tracker", icon="🔒")
             #st.page_link("pages/page5.py", label="Lockup Expiration Tracker", icon="🔒")
