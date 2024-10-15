@@ -7,7 +7,7 @@ import pandas as pd
 st.set_page_config(layout="wide")
 #test
 conn = st.connection('gcs', type=FilesConnection)
-df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=3600)
+df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=5)
 df['All Owners'] = df['All Owners'].fillna('')
 
 #owners_split = df['Owners'].str.split('|', expand=True)
