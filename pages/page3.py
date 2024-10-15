@@ -8,6 +8,7 @@ st.set_page_config(layout="wide")
 #test
 conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/13G_13D_data.csv", input_format="csv", ttl=5, keep_default_na=False)
+df = df.replace('', pd.NA)
 df['All Owners'] = df['All Owners'].fillna('')
 
 #owners_split = df['Owners'].str.split('|', expand=True)
