@@ -5,7 +5,7 @@ import pandas as pd
 
 st.set_page_config(layout="wide")
 conn = st.connection('gcs', type=FilesConnection)
-df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
+df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=5)
 # Check if "NA" is present in the 'Ticker' column before replacing it
 df['Ticker'] = df['Ticker'].fillna('NA')
 
