@@ -9,8 +9,6 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 # Check if "NA" is present in the 'Ticker' column before replacing it
 df['Ticker'] = df['Ticker'].fillna('NA')
 
-
-st.set_page_config(layout="wide")
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.write("""Ticker Lookup Coming Soon""")
