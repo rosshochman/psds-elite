@@ -17,6 +17,10 @@ if st.session_state.get('logged_in', False):
     selected_ticker = st.selectbox('Select Ticker:', ticker_options)
     if selected_ticker != 'Select a Ticker':
         st.write(f'You selected: {selected_ticker}')
+        filtered_df = df[df['Ticker'] == selected_ticker]
+        transposed_df = filtered_df.T.reset_index()  # Transpose and reset index
+        transposed_df.columns = ['Attribute', 'Value']  # Rename columns
+        st.write(transposed_df)
     else:
         st.write('Please select a Ticker')
 if not st.session_state.get('logged_in', False):
