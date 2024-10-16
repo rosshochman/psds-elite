@@ -14,7 +14,7 @@ ticker_options = ['Select a Ticker'] + list(df['Ticker'].unique())
 make_sidebar()
 if st.session_state.get('logged_in', False):
     st.write("""Ticker Lookup Coming Soon""")
-    selected_tickers = st.selectbox('Select Ticker:', ticker_options)
+    selected_ticker = st.selectbox('Select Ticker:', ticker_options)
     if selected_ticker != 'Select a Ticker':
         st.write(f'You selected: {selected_ticker}')
     else:
