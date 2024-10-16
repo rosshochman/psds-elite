@@ -20,7 +20,8 @@ if st.session_state.get('logged_in', False):
         filtered_df = df[df['Ticker'] == selected_ticker]
         transposed_df = filtered_df.T.reset_index()  # Transpose and reset index
         transposed_df.columns = ['Attribute', 'Value']  # Rename columns
-        st.write(transposed_df, use_container_width=True, hide_index=True)
+        df1 = st.empty()
+        df1.dataframe(filtered_df, use_container_width=True, hide_index=True, height=750)
     else:
         st.write('Please select a Ticker')
 if not st.session_state.get('logged_in', False):
