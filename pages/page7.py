@@ -10,6 +10,8 @@ df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=
 df['Ticker'] = df['Ticker'].fillna('NA')
 ticker_options = ['Select a Ticker'] + list(df['Ticker'].unique())
 
+df_keyword = conn.read("psds_streamlit/full_text_final.csv", input_format="csv", ttl=3600)
+
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
@@ -22,6 +24,9 @@ if st.session_state.get('logged_in', False):
         transposed_df.columns = ['Attribute', 'Value']  # Rename columns
         df1 = st.empty()
         df1.dataframe(transposed_df, use_container_width=False, hide_index=True)
+        filtered_keyword_df = df_keyword[df_keyword['Ticker'] == selected_ticker]
+        df2 = st.empty()
+        df2.dataframe(filtered_keyword_df, use_container_width=False, hide_index=True)
     else:
         st.write('Please select a Ticker')
 if not st.session_state.get('logged_in', False):
