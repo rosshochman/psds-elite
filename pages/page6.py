@@ -3,10 +3,12 @@ import streamlit as st
 from st_files_connection import FilesConnection
 import pandas as pd
 
+st.set_page_config(layout="wide")
+
+
 conn = st.connection('gcs', type=FilesConnection)
 df_keyword = conn.read("psds_streamlit/full_text_final.csv", input_format="csv", ttl=3600)
 
-st.set_page_config(layout="wide")
 
 
 make_sidebar()
