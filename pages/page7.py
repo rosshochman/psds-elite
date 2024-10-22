@@ -11,6 +11,7 @@ df['Ticker'] = df['Ticker'].fillna('NA')
 ticker_options = ['Select a Ticker'] + list(df['Ticker'].unique())
 
 df_keyword = conn.read("psds_streamlit/full_text_final.csv", input_format="csv", ttl=3600)
+df_keyword_grouped = df_keyword.groupby('true_link')['keyword'].apply(lambda x: ' | '.join(x)).reset_index()
 
 
 make_sidebar()
@@ -24,7 +25,7 @@ if st.session_state.get('logged_in', False):
         transposed_df.columns = ['Attribute', 'Value']  # Rename columns
         df1 = st.empty()
         df1.dataframe(transposed_df, use_container_width=False, hide_index=True)
-        filtered_keyword_df = df_keyword[df_keyword['Ticker'] == selected_ticker]
+        filtered_keyword_df = df_keyword_grouped[df_keyword_grouped['Ticker'] == selected_ticker]
         df2 = st.empty()
         df2.dataframe(filtered_keyword_df, use_container_width=False, hide_index=True)
     else:
