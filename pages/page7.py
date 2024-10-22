@@ -11,8 +11,15 @@ df['Ticker'] = df['Ticker'].fillna('NA')
 ticker_options = ['Select a Ticker'] + list(df['Ticker'].unique())
 
 df_keyword = conn.read("psds_streamlit/full_text_final.csv", input_format="csv", ttl=3600)
-df_keyword_grouped = df_keyword.groupby('true_link')['keyword'].apply(lambda x: ' | '.join(x)).reset_index()
+# Define a custom aggregation function
+def custom_agg_func(series):
+    if series.name == 'keyword':
+        return ' | '.join(series)
+    else:
+        return series.iloc[0]  # Preserves the first value of each other column
 
+# Apply the aggregation function to all columns
+df_keyword_grouped = df_keyword.groupby('true_link').agg(custom_agg_func).reset_index()
 
 make_sidebar()
 if st.session_state.get('logged_in', False):
