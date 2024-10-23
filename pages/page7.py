@@ -35,7 +35,7 @@ if st.session_state.get('logged_in', False):
         df1 = st.empty()
         df1.dataframe(transposed_df, use_container_width=True, hide_index=True)
         filtered_keyword_df = df_keyword_grouped[df_keyword_grouped['Ticker'] == selected_ticker]
-        st.write("""Keyword Data Below""")
+        st.write("""Keyword Data""")
         df2 = st.empty()
         df2.dataframe(filtered_keyword_df, use_container_width=True, hide_index=True)
     else:
