@@ -8,7 +8,9 @@ conn = st.connection('gcs', type=FilesConnection)
 df = conn.read("psds_streamlit/uploaded-data_test.csv", input_format="csv", ttl=3600)
 # Check if "NA" is present in the 'Ticker' column before replacing it
 df['Ticker'] = df['Ticker'].fillna('NA')
-ticker_options = ['Select a Ticker'] + list(df['Ticker'].unique())
+#ticker_options = ['Select a Ticker'] + list(df['Ticker'].unique())
+ticker_options = list(df['Ticker'].unique())
+
 
 df_keyword = conn.read("psds_streamlit/full_text_final.csv", input_format="csv", ttl=3600)
 # Define a custom aggregation function
