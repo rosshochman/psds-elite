@@ -15,6 +15,6 @@ make_sidebar()
 if st.session_state.get('logged_in', False):
     st.write("""Keyword Tracker Coming Soon""")
     df1 = st.empty()
-    df1.dataframe(df_keyword, use_container_width=True, hide_index=True)
+    df1.dataframe(df_keyword, use_container_width=True, hide_index=True, height=750)
 if not st.session_state.get('logged_in', False):
     st.write("Forbidden")
